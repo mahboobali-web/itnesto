@@ -1,0 +1,902 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { motion } from "framer-motion";
+
+export default function Home() {
+  const containerRef = useRef(null);
+  const shaderRef = useRef(null);
+
+  // Initialize Three.js Ecosystem Animation
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+    const scene = new THREE.Scene();
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    const ecosystemGroup = new THREE.Group();
+    scene.add(ecosystemGroup);
+
+    const hubGeo = new THREE.SphereGeometry(0.5, 32, 32);
+    const hubMat = new THREE.MeshPhongMaterial({ 
+        color: 0x00BF63, 
+        emissive: 0x00BF63, 
+        emissiveIntensity: 0.5,
+        transparent: true,
+        opacity: 0.8
+    });
+    const hub = new THREE.Mesh(hubGeo, hubMat);
+    scene.add(hub);
+
+    const elements = [];
+    const elementCount = 8;
+    const radius = 2.5;
+    const colors = [0x002366, 0x00BF63, 0x026873, 0xFFFFFF];
+
+    for (let i = 0; i < elementCount; i++) {
+        const geo = i % 2 === 0 ? new THREE.BoxGeometry(0.3, 0.3, 0.3) : new THREE.SphereGeometry(0.2, 16, 16);
+        const mat = new THREE.MeshPhongMaterial({ color: colors[i % colors.length] });
+        const mesh = new THREE.Mesh(geo, mat);
+        
+        const angle = (i / elementCount) * Math.PI * 2;
+        mesh.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, (Math.random() - 0.5) * 1);
+        
+        ecosystemGroup.add(mesh);
+        elements.push({
+            mesh: mesh,
+            angle: angle,
+            speed: 0.005 + Math.random() * 0.01,
+            yOffset: Math.random() * Math.PI * 2
+        });
+    }
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    camera.position.z = 5;
+    
+    let animationFrameId;
+    const animate = () => {
+        animationFrameId = requestAnimationFrame(animate);
+        ecosystemGroup.rotation.y += 0.002;
+        ecosystemGroup.rotation.z += 0.001;
+        
+        elements.forEach(el => {
+            el.angle += el.speed;
+            el.mesh.position.x = Math.cos(el.angle) * radius;
+            el.mesh.position.y = Math.sin(el.angle) * radius + Math.sin(Date.now() * 0.001 + el.yOffset) * 0.2;
+            el.mesh.rotation.x += 0.01;
+            el.mesh.rotation.y += 0.01;
+        });
+        
+        hub.scale.setScalar(1 + Math.sin(Date.now() * 0.002) * 0.05);
+        renderer.render(scene, camera);
+    };
+
+    animate();
+
+    const handleResize = () => {
+        if (!containerRef.current) return;
+        const w = containerRef.current.clientWidth;
+        const h = containerRef.current.clientHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationFrameId);
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
+  }, []);
+
+  // Initialize fade-up animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach((el) => {
+        observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <>
+      {/* Global Background Animation */}
+      <div className="absolute top-0 right-0 w-1/2 h-full z-0 pointer-events-none opacity-20 hidden lg:block">
+        <div className="absolute inset-0 w-full h-full transform scale-150 translate-x-1/4">
+          <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+        </div>
+      </div>
+
+      {/* Top Navigation Bar */}
+      <header className="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/90 border-b border-outline-variant/20 shadow-sm h-20 transition-all">
+        <nav className="flex justify-between items-center px-margin-mobile h-full w-full max-w-container-max mx-auto">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary text-3xl">grid_view</span>
+            <span className="text-primary text-3xl font-extrabold tracking-tighter">IT NESTO</span>
+          </div>
+          <div className="hidden md:flex items-center gap-8">
+            <a className="font-label-md text-label-md text-secondary font-bold hover:opacity-80 transition-opacity" href="#">Home</a>
+            <a className="font-label-md text-label-md text-on-surface-variant hover:opacity-80 transition-opacity" href="#services">Services</a>
+            <a className="font-label-md text-label-md text-on-surface-variant hover:opacity-80 transition-opacity" href="#portfolio">Portfolio</a>
+            <a className="font-label-md text-label-md text-on-surface-variant hover:opacity-80 transition-opacity" href="#about">About</a>
+            <button className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-button text-button hover:opacity-80 transition-all active:scale-95 duration-200">
+              Start Your Project
+            </button>
+          </div>
+          <button className="md:hidden text-primary">
+            <span className="material-symbols-outlined text-3xl">menu</span>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        {/* Hero Section */}
+        <section className="relative pt-[160px] pb-section-gap overflow-hidden min-h-screen flex items-center">
+          <div className="max-w-container-max mx-auto px-margin-mobile grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center relative z-10">
+            <div className="fade-up visible">
+              <h1 className="font-display-2xl font-bold text-[50px] leading-[1.2] md:text-[72px] md:leading-[1.1] text-primary mb-8 tracking-tight">
+                Building Powerful <span className="inline-block text-secondary-container bg-primary px-4 pb-2 pt-1 mx-1 rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
+              </h1>
+              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed text-lg">
+                We merge architectural precision with high-growth engineering to build scalable products for enterprise leaders and visionary startups.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <button className="magnetic-btn bg-primary text-on-primary px-8 py-4 rounded-full font-button text-button flex items-center gap-2 hover:shadow-lg transition-all active:scale-95">
+                  Start Your Project
+                  <span className="material-symbols-outlined">arrow_forward</span>
+                </button>
+                <button className="magnetic-btn border-2 border-outline-variant text-primary px-8 py-4 rounded-full font-button text-button hover:bg-primary hover:text-on-primary hover:border-primary transition-all">
+                  View Our Work
+                </button>
+              </div>
+            </div>
+            <div className="relative h-[400px] md:h-[600px] w-full flex items-center justify-center fade-up visible" style={{ transitionDelay: '200ms' }}>
+              <div className="relative w-full h-full max-w-lg mx-auto">
+                {/* Floating Card 1 - Web Dev */}
+                <motion.div 
+                  animate={{ y: [0, -20, 0] }} 
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute top-[10%] left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-primary">code</span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-primary">React Component</div>
+                      <div className="text-xs text-on-surface-variant">App.jsx</div>
+                    </div>
+                  </div>
+                  <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/30">
+                    <div className="font-mono text-[11px] text-on-surface-variant leading-relaxed">
+                      <span className="text-[#c678dd] font-semibold">export default</span> <span className="text-[#56b6c2]">function</span> <span className="text-primary font-bold">App</span>() {'{'}<br/>
+                      &nbsp;&nbsp;<span className="text-[#c678dd] font-semibold">return</span> (<br/>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span className="text-secondary font-bold">NextEcosystem</span> /&gt;<br/>
+                      &nbsp;&nbsp;);<br/>
+                      {'}'}
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Floating Card 2 - SEO/Analytics */}
+                <motion.div 
+                  animate={{ y: [0, 25, 0] }} 
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute top-[40%] right-[-5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
+                >
+                  <div className="flex justify-between items-end mb-4">
+                    <div>
+                      <div className="text-xs text-on-surface-variant font-bold mb-1">TRAFFIC GROWTH</div>
+                      <div className="text-2xl font-display-xl text-primary font-bold">+245%</div>
+                    </div>
+                    <span className="material-symbols-outlined text-secondary text-3xl">trending_up</span>
+                  </div>
+                  <div className="flex items-end gap-2 h-16 mt-4">
+                    <div className="w-1/6 bg-primary/20 h-[30%] rounded-t"></div>
+                    <div className="w-1/6 bg-primary/40 h-[50%] rounded-t"></div>
+                    <div className="w-1/6 bg-primary/60 h-[70%] rounded-t"></div>
+                    <div className="w-1/6 bg-primary/80 h-[85%] rounded-t"></div>
+                    <div className="w-1/6 bg-secondary h-[100%] rounded-t"></div>
+                  </div>
+                </motion.div>
+
+                {/* Floating Card 3 - Mobile App */}
+                <motion.div 
+                  animate={{ y: [0, -15, 0] }} 
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                  className="absolute bottom-[5%] left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
+                >
+                  <div className="w-full h-32 bg-primary rounded-xl mb-4 relative overflow-hidden flex flex-col p-3 border border-primary-container">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2 h-2 rounded-full bg-secondary-fixed"></div>
+                        <span className="text-[10px] text-white font-medium">Live Server</span>
+                      </div>
+                      <span className="material-symbols-outlined text-white/50 text-[16px]">more_horiz</span>
+                    </div>
+                    <div className="flex-1 bg-white/10 rounded-lg p-2.5 backdrop-blur-sm mt-1 border border-white/10 relative z-10">
+                      <p className="text-[9px] text-white/70 font-semibold mb-0.5 tracking-wider">ACTIVE USERS</p>
+                      <p className="text-lg text-white font-bold font-display-xl">12,450</p>
+                      <div className="mt-1.5 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[12px] text-secondary-fixed">arrow_upward</span>
+                        <span className="text-[10px] font-bold text-secondary-fixed">14.2%</span>
+                      </div>
+                    </div>
+                    <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-secondary-fixed/40 rounded-full blur-xl z-0"></div>
+                  </div>
+                  <div className="flex justify-center items-center gap-4">
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors cursor-pointer">
+                        <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                      </div>
+                      <span className="text-[9px] font-bold text-on-surface-variant">SHOP</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-lg cursor-pointer">
+                        <span className="material-symbols-outlined text-[20px]">add</span>
+                      </div>
+                      <span className="text-[9px] font-bold text-primary">NEW</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors cursor-pointer">
+                        <span className="material-symbols-outlined text-[20px]">person</span>
+                      </div>
+                      <span className="text-[9px] font-bold text-on-surface-variant">PROFILE</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Background Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 blur-[100px] rounded-full z-0"></div>
+                <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-secondary-fixed/20 blur-[80px] rounded-full z-0"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Bar */}
+        <section className="py-8 bg-primary overflow-hidden border-y border-white/5">
+          <div className="marquee-container">
+            <div className="marquee-content py-4">
+              <span className="text-on-primary font-display-xl text-headline-md flex items-center gap-12 whitespace-nowrap">
+                <span>10+ Years Experience</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+                <span>250+ Projects Completed</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+                <span>150+ Happy Clients</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+                <span>20+ Countries Served</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+              </span>
+            </div>
+            <div className="marquee-content py-4">
+              <span className="text-on-primary font-display-xl text-headline-md flex items-center gap-12 whitespace-nowrap">
+                <span>10+ Years Experience</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+                <span>250+ Projects Completed</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+                <span>150+ Happy Clients</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+                <span>20+ Countries Served</span>
+                <span className="w-2 h-2 bg-secondary-fixed rounded-full"></span>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section - Modern Cinematic Layout */}
+        <section className="pt-section-gap pb-20 relative" id="about">
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            {/* Cinematic Image Card */}
+            <div className="relative rounded-[40px] overflow-hidden shadow-elevation-2 h-[600px] lg:h-[700px] fade-up bg-primary group">
+              
+              {/* Ken Burns Animated Background Image */}
+              <motion.img 
+                src="/modern_tech_office.jpg" 
+                alt="Team at IT Nesto" 
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.85] origin-center"
+                animate={{ 
+                  scale: [1, 1.15, 1],
+                  x: ["0%", "-3%", "0%"],
+                  y: ["0%", "3%", "0%"]
+                }}
+                transition={{ 
+                  duration: 40, 
+                  repeat: Infinity, 
+                  ease: "linear" 
+                }}
+              />
+              
+              {/* Subtle overlay to ensure floating elements are readable while keeping image clean */}
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
+              <div className="absolute inset-0 bg-black/10"></div>
+              
+              {/* Scanline / Live Feed Effect Overlay */}
+              <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #000000 2px, #000000 4px)' }}></div>
+
+              {/* Floating Live Telemetry Node 1 - Project Status */}
+              <motion.div 
+                animate={{ y: [0, -20, 0], opacity: [0.8, 1, 0.8] }} 
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-12 right-12 hidden lg:flex items-center gap-4 bg-white/5 backdrop-blur-2xl border border-white/20 p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20"
+              >
+                <div className="relative flex h-5 w-5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75 duration-1000"></span>
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-secondary shadow-[0_0_15px_rgba(46,204,113,0.8)] border-2 border-[#1B2A47]"></span>
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold text-white/50 tracking-widest uppercase mb-0.5">Active Sprints</div>
+                  <div className="text-sm font-bold text-white flex items-center gap-2">
+                    12 Projects
+                    <span className="text-[10px] text-secondary font-mono bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">On Track</span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Floating Live Telemetry Node 2 - Activity Graph */}
+              <motion.div 
+                animate={{ y: [0, 15, 0] }} 
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute top-1/3 right-32 hidden lg:block w-64 bg-white/5 backdrop-blur-2xl border border-white/20 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20"
+              >
+                <div className="text-[10px] font-bold text-white/50 tracking-widest uppercase mb-4 flex justify-between items-center">
+                  <span>Weekly Deployments</span>
+                  <span className="text-secondary font-mono bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">48+</span>
+                </div>
+                <div className="flex items-end gap-1.5 h-20">
+                  {[40, 70, 45, 90, 65, 85, 30, 60, 50, 75, 85, 40].map((h, i) => (
+                    <motion.div 
+                      key={i}
+                      className="w-full bg-gradient-to-t from-secondary/50 to-secondary rounded-t-sm shadow-[0_0_8px_rgba(46,204,113,0.5)]"
+                      animate={{ height: [`${h}%`, `${Math.max(10, h - 30 + Math.random()*60)}%`, `${h}%`] }}
+                      transition={{ duration: 1.5 + Math.random(), repeat: Infinity, ease: "easeInOut" }}
+                      style={{ height: `${h}%` }}
+                    ></motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Floating Live Telemetry Node 3 - Global Reach */}
+              <motion.div 
+                animate={{ y: [0, -10, 0] }} 
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                className="absolute bottom-1/4 right-16 hidden lg:flex items-center gap-5 bg-white/5 backdrop-blur-2xl border border-white/20 p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20"
+              >
+                <div className="relative w-12 h-12 border border-secondary/30 rounded-full flex items-center justify-center">
+                  <motion.div 
+                    className="absolute w-full h-full border-t border-secondary rounded-full"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  ></motion.div>
+                  <div className="w-1.5 h-1.5 bg-secondary rounded-full shadow-[0_0_10px_rgba(46,204,113,1)]"></div>
+                  <div className="absolute top-2 right-2 w-1 h-1 bg-white rounded-full"></div>
+                  <div className="absolute bottom-3 left-3 w-1 h-1 bg-white/50 rounded-full"></div>
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold text-white/50 tracking-widest uppercase mb-1">Global Client Reach</div>
+                  <div className="text-xl font-bold text-white font-mono tracking-tight">
+                    <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 0.5, repeat: Infinity }}>+</motion.span>24 <span className="text-sm font-sans text-white/70">Countries</span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* High-Contrast Floating Content Box */}
+              <div className="absolute bottom-6 left-6 right-6 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-8 lg:p-12 rounded-[32px] shadow-2xl border border-white/50 fade-up" style={{ transitionDelay: '200ms' }}>
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10">Our Mission</span>
+                  <div className="h-px bg-primary/10 flex-1"></div>
+                </div>
+                
+                <h2 className="text-[40px] md:text-[52px] leading-[1.1] text-primary mb-6 font-extrabold tracking-tight">Redefining Digital Excellence.</h2>
+                
+                <p className="text-on-surface-variant mb-8 leading-relaxed text-lg">
+                  We believe technology should be as elegant as it is powerful. We bridge the gap between complex business logic and intuitive user experiences.
+                </p>
+                
+                {/* Scannable Bullet Points */}
+                <div className="space-y-4 mb-10">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-secondary text-sm font-bold">check</span>
+                    </div>
+                    <span className="text-primary font-bold text-base">Enterprise-grade architecture</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="material-symbols-outlined text-secondary text-sm font-bold">check</span>
+                    </div>
+                    <span className="text-primary font-bold text-base">Human-centered UI/UX design</span>
+                  </div>
+                </div>
+
+                <button className="magnetic-btn bg-primary text-on-primary px-8 py-4 rounded-full font-button text-button inline-flex items-center gap-3 hover:bg-secondary hover:text-on-secondary transition-colors duration-300 shadow-lg">
+                  Discover Our Approach
+                  <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Impact Metrics */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 lg:mt-12">
+              {[
+                { icon: "handshake", value: "99", suffix: "%", label: "Client Retention" },
+                { icon: "rocket_launch", value: "250", suffix: "+", label: "Products Launched" },
+                { icon: "trophy", value: "35", suffix: "+", label: "Industry Awards" },
+                { icon: "language", value: "24", suffix: "/7", label: "Global Support" }
+              ].map((metric, idx) => (
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: 0.3 + (idx * 0.15), ease: "easeOut" }}
+                  className="relative p-8 rounded-[32px] bg-gradient-to-br from-[#0B1526] via-primary to-[#182640] overflow-hidden border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.15)] hover:-translate-y-3 hover:shadow-[0_20px_40px_rgba(46,204,113,0.2)] transition-all duration-500 group"
+                >
+                  {/* Internal Glow Effect */}
+                  <div className="absolute -top-12 -right-12 w-40 h-40 bg-secondary/10 rounded-full blur-[40px] group-hover:bg-secondary/30 transition-colors duration-700"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-all duration-500 backdrop-blur-md shadow-inner">
+                      <span className="material-symbols-outlined text-white/70 text-2xl group-hover:text-secondary transition-colors duration-500">{metric.icon}</span>
+                    </div>
+                    <div className="text-4xl md:text-5xl font-display-xl font-extrabold text-white mb-3 tracking-tight">
+                      {metric.value}<span className="text-secondary">{metric.suffix}</span>
+                    </div>
+                    <div className="text-[11px] font-bold text-white/50 uppercase tracking-[0.2em]">{metric.label}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="py-section-gap bg-white border-y border-outline-variant/10" id="services">
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            <div className="text-center mb-20 fade-up">
+              <h2 className="font-display-xl text-headline-lg-mobile md:text-[56px] text-primary mb-4 font-extrabold tracking-tight">Strategic Digital Services</h2>
+              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto text-lg">Engineered solutions for every stage of your digital journey.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: "terminal", title: "Website\nDevelopment", desc: "Custom Next.js & React ecosystems optimized for speed and conversion.", delay: "0ms" },
+                { icon: "smartphone", title: "Mobile\nApps", desc: "Cross-platform Flutter and React Native experiences that feel native.", delay: "100ms" },
+                { icon: "trending_up", title: "SEO\nSolutions", desc: "Technical SEO and content strategies that dominate search rankings.", delay: "200ms" },
+                { icon: "hub", title: "Digital\nMarketing", desc: "Full-funnel marketing to ensure your tech reaches its target audience.", delay: "300ms" },
+                { icon: "edit_document", title: "Content\nWriting", desc: "Compelling, SEO-optimized copy that engages users and drives conversions.", delay: "400ms" },
+                { icon: "palette", title: "Graphic\nDesign", desc: "Stunning visual identities, branding, and assets that captivate your audience.", delay: "500ms" },
+                { icon: "smart_toy", title: "AI\nWorkflows", desc: "Intelligent automation and AI integrations to supercharge your operations.", delay: "600ms" },
+                { icon: "developer_board", title: "Custom\nSoftware", desc: "Bespoke enterprise applications tailored specifically to your business logic.", delay: "700ms" }
+              ].map((service, idx) => (
+                <div key={idx} className="relative p-10 rounded-[32px] bg-primary overflow-hidden border border-white/10 shadow-2xl hover:-translate-y-2 hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: service.delay }}>
+                  {/* Internal Glow Effect */}
+                  <div className="absolute -bottom-16 -right-16 w-56 h-56 bg-secondary/15 rounded-full blur-[60px] group-hover:bg-secondary/30 transition-colors duration-700"></div>
+                  
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-secondary/20 group-hover:border-secondary/40 transition-all duration-500 backdrop-blur-md">
+                      <span className="material-symbols-outlined text-white/70 text-3xl group-hover:text-secondary transition-colors duration-500">{service.icon}</span>
+                    </div>
+                    <h3 className="text-[28px] leading-[1.1] text-white mb-5 font-bold tracking-tight">
+                      {service.title.split('\n').map((line, i) => (
+                        <span key={i}>
+                          {line}
+                          {i === 0 && <br />}
+                        </span>
+                      ))}
+                    </h3>
+                    <p className="text-white/60 leading-relaxed text-sm mt-auto">
+                      {service.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Our Process */}
+        <section className="py-section-gap relative">
+          {/* Subtle background element */}
+          <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent -z-10"></div>
+          
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 fade-up">
+              <div className="max-w-2xl">
+                <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10 mb-6">Workflow</span>
+                <h2 className="font-display-xl text-headline-lg-mobile md:text-[56px] text-primary mb-6 font-extrabold tracking-tight leading-tight">Our Methodical Process</h2>
+                <p className="font-body-lg text-body-lg text-on-surface-variant text-lg leading-relaxed">How we turn complex ideas into seamless digital realities through engineering excellence.</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { num: "01", title: "Discovery", icon: "search", desc: "We dive deep into your business goals, user needs, and market landscape to define a winning strategy." },
+                { num: "02", title: "Planning", icon: "lightbulb", desc: "Crafting a meticulous architectural blueprint and roadmap to ensure scalable and seamless execution." },
+                { num: "03", title: "Design", icon: "architecture", desc: "Creating stunning, human-centered interfaces that captivate users and elevate your brand identity." },
+                { num: "04", title: "Development", icon: "data_object", desc: "Writing clean, scalable code using the latest tech stacks for robust, enterprise-grade performance." },
+                { num: "05", title: "Testing", icon: "verified", desc: "Rigorous quality assurance to ensure flawless functionality and security across all devices." },
+                { num: "06", title: "Launch", icon: "rocket_launch", desc: "Deploying your solution to the world with precision, followed by ongoing support and optimization." }
+              ].map((step, idx) => (
+                <div key={idx} className="group relative p-10 rounded-[32px] bg-white border border-outline-variant/20 hover:bg-primary transition-colors duration-500 overflow-hidden shadow-sm hover:shadow-2xl fade-up" style={{ transitionDelay: `${idx * 100}ms` }}>
+                  {/* Massive Watermark Number */}
+                  <div className="absolute -bottom-8 -right-4 font-display-2xl text-[120px] font-black text-outline-variant/10 group-hover:text-secondary/10 transition-colors duration-500 pointer-events-none select-none">
+                    {step.num}
+                  </div>
+                  
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-8">
+                      <div className="w-16 h-16 rounded-2xl bg-primary/5 group-hover:bg-white/10 flex items-center justify-center transition-colors duration-500 backdrop-blur-sm">
+                        <span className="material-symbols-outlined text-primary group-hover:text-secondary text-3xl transition-colors duration-500">{step.icon}</span>
+                      </div>
+                      <span className="text-primary/30 group-hover:text-secondary/50 font-bold text-xl tracking-widest transition-colors duration-500">{step.num}</span>
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-primary group-hover:text-white mb-4 transition-colors duration-500">{step.title}</h3>
+                    <p className="text-on-surface-variant group-hover:text-white/70 leading-relaxed text-sm transition-colors duration-500">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Technology Stack */}
+        <section className="pt-section-gap pb-12 bg-primary relative overflow-hidden" id="tech-stack">
+          {/* Glowing background meshes */}
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full pointer-events-none"></div>
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary-fixed/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+          <div className="max-w-container-max mx-auto px-margin-mobile relative z-10">
+            <div className="text-center mb-16 fade-up">
+              <span className="inline-block px-4 py-1.5 bg-white/5 text-white font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-white/10 mb-6">Our Stack</span>
+              <h2 className="text-4xl md:text-5xl text-white font-extrabold tracking-tight mb-4">World-Class Technologies</h2>
+              <p className="text-white/60 text-lg max-w-2xl mx-auto">We build on top of robust, scalable, and modern ecosystems.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 fade-up" style={{ transitionDelay: '200ms' }}>
+              {/* Frontend Card */}
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] hover:bg-white/10 hover:border-white/20 transition-all duration-500 group">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/40 to-transparent flex items-center justify-center border border-secondary/20">
+                    <span className="material-symbols-outlined text-secondary text-2xl">web</span>
+                  </div>
+                  <h3 className="text-2xl text-white font-bold">Frontend</h3>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {['React.js', 'Next.js', 'Vue.js', 'Tailwind CSS', 'Framer Motion', 'TypeScript'].map(tech => (
+                    <span key={tech} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-sm border border-white/5 group-hover:border-white/20 transition-colors">{tech}</span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Mobile & Backend Card */}
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] hover:bg-white/10 hover:border-white/20 transition-all duration-500 group">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-fixed/40 to-transparent flex items-center justify-center border border-primary-fixed/20">
+                    <span className="material-symbols-outlined text-primary-fixed text-2xl">smartphone</span>
+                  </div>
+                  <h3 className="text-2xl text-white font-bold">Mobile & Core</h3>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {['Flutter', 'React Native', 'Node.js', 'Python', 'Go', 'PostgreSQL'].map(tech => (
+                    <span key={tech} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-sm border border-white/5 group-hover:border-white/20 transition-colors">{tech}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cloud Card */}
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[32px] hover:bg-white/10 hover:border-white/20 transition-all duration-500 group">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-tertiary-fixed/40 to-transparent flex items-center justify-center border border-tertiary-fixed/20">
+                    <span className="material-symbols-outlined text-tertiary-fixed text-2xl">cloud</span>
+                  </div>
+                  <h3 className="text-2xl text-white font-bold">Cloud & AI</h3>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {['AWS', 'Google Cloud', 'Docker', 'Kubernetes', 'OpenAI', 'TensorFlow'].map(tech => (
+                    <span key={tech} className="px-4 py-2 rounded-full bg-white/5 text-white/80 text-sm border border-white/5 group-hover:border-white/20 transition-colors">{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Statistics */}
+        <section className="bg-primary pb-section-gap relative z-20" id="statistics">
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              {/* Stat 1 */}
+              <div className="text-center flex flex-col items-center justify-center p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20 group-hover:bg-secondary group-hover:border-transparent transition-colors duration-500">
+                    <span className="material-symbols-outlined text-secondary group-hover:text-primary transition-colors duration-500">public</span>
+                  </div>
+                  <p className="font-label-md text-sm text-white/60 uppercase tracking-[0.2em] font-bold group-hover:text-white/90 transition-colors">Global Projects</p>
+                </div>
+                <div className="font-display-2xl text-[80px] leading-none font-black text-white tracking-tight">
+                  250<span className="text-secondary drop-shadow-[0_0_15px_rgba(46,204,113,0.5)]">+</span>
+                </div>
+              </div>
+
+              {/* Stat 2 */}
+              <div className="text-center flex flex-col items-center justify-center p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: '100ms' }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20 group-hover:bg-secondary group-hover:border-transparent transition-colors duration-500">
+                    <span className="material-symbols-outlined text-secondary group-hover:text-primary transition-colors duration-500">favorite</span>
+                  </div>
+                  <p className="font-label-md text-sm text-white/60 uppercase tracking-[0.2em] font-bold group-hover:text-white/90 transition-colors">Client Retention</p>
+                </div>
+                <div className="font-display-2xl text-[80px] leading-none font-black text-white tracking-tight">
+                  99<span className="text-secondary drop-shadow-[0_0_15px_rgba(46,204,113,0.5)]">%</span>
+                </div>
+              </div>
+
+              {/* Stat 3 */}
+              <div className="text-center flex flex-col items-center justify-center p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: '200ms' }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20 group-hover:bg-secondary group-hover:border-transparent transition-colors duration-500">
+                    <span className="material-symbols-outlined text-secondary group-hover:text-primary transition-colors duration-500">code_blocks</span>
+                  </div>
+                  <p className="font-label-md text-sm text-white/60 uppercase tracking-[0.2em] font-bold group-hover:text-white/90 transition-colors">Core Tech Stack</p>
+                </div>
+                <div className="font-display-2xl text-[80px] leading-none font-black text-white tracking-tight">
+                  15<span className="text-secondary drop-shadow-[0_0_15px_rgba(46,204,113,0.5)]">+</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-section-gap relative overflow-hidden" id="testimonials">
+          {/* Subtle background gradients */}
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-primary/5 -z-10"></div>
+
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              
+              <div className="lg:col-span-4 fade-up">
+                <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10 mb-6">Client Success</span>
+                <h2 className="font-display-xl text-[48px] leading-[1.1] text-primary mb-6 font-extrabold tracking-tight">Trusted by Industry Leaders.</h2>
+                <p className="text-on-surface-variant text-lg leading-relaxed mb-10">We don&apos;t just build software; we build lasting digital footprints that drive tangible business growth.</p>
+                <div className="flex gap-4">
+                  <button className="w-14 h-14 rounded-full bg-white border border-outline-variant/20 shadow-sm flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary hover:shadow-xl hover:-translate-x-1 transition-all duration-300 group">
+                    <span className="material-symbols-outlined text-primary group-hover:text-white transition-colors">west</span>
+                  </button>
+                  <button className="w-14 h-14 rounded-full bg-white border border-outline-variant/20 shadow-sm flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary hover:shadow-xl hover:translate-x-1 transition-all duration-300 group">
+                    <span className="material-symbols-outlined text-primary group-hover:text-white transition-colors">east</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="lg:col-span-8 overflow-hidden relative">
+                {/* Gradient masks for smooth scrolling edges */}
+                <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
+
+                <div className="flex gap-6 overflow-x-auto pb-12 pt-8 snap-x snap-mandatory no-scrollbar pr-24">
+                  
+                  {/* Testimonial Card 1 */}
+                  <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] snap-center shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 fade-up relative group overflow-hidden">
+                    {/* Massive Quote Watermark */}
+                    <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                      &quot;
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <div className="flex text-secondary mb-8 gap-1">
+                        {[1,2,3,4,5].map(i => (
+                          <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                        ))}
+                      </div>
+                      <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;The team at IT Nesto didn&apos;t just build a site; they built a tool that actively drives our growth. Their attention to technical detail is unmatched.&quot;</p>
+                      
+                      <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">SJ</div>
+                        <div>
+                          <h5 className="font-bold text-primary text-lg">Sarah Jenkins</h5>
+                          <p className="text-sm text-on-surface-variant font-medium">CTO, FinTech Solutions</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Testimonial Card 2 */}
+                  <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] snap-center shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 fade-up relative group overflow-hidden" style={{ transitionDelay: '100ms' }}>
+                    {/* Massive Quote Watermark */}
+                    <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                      &quot;
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <div className="flex text-secondary mb-8 gap-1">
+                        {[1,2,3,4,5].map(i => (
+                          <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                        ))}
+                      </div>
+                      <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;Remarkable speed to market. We went from MVP to full deployment in record time with IT Nesto&apos;s agile methodology.&quot;</p>
+                      
+                      <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                        <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xl">MT</div>
+                        <div>
+                          <h5 className="font-bold text-primary text-lg">Marcus Thorne</h5>
+                          <p className="text-sm text-on-surface-variant font-medium">Founder, Skyward Commerce</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Form */}
+        <section className="py-section-gap">
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            <div className="bg-primary rounded-3xl overflow-hidden flex flex-col lg:flex-row">
+              <div className="p-10 md:p-20 lg:w-1/2 text-on-primary">
+                <h2 className="font-display-xl text-headline-lg-mobile md:text-headline-xl mb-8">Let&apos;s build something exceptional together.</h2>
+                <div className="space-y-8">
+                  <div className="flex items-center gap-6">
+                    <span className="material-symbols-outlined text-4xl text-secondary-fixed">mail</span>
+                    <div>
+                      <p className="text-on-primary/60 text-sm">Send us an email</p>
+                      <p className="font-bold text-lg">hello@itnesto.com</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <span className="material-symbols-outlined text-4xl text-secondary-fixed">phone_callback</span>
+                    <div>
+                      <p className="text-on-primary/60 text-sm">Give us a call</p>
+                      <p className="font-bold text-lg">+1 (234) 567 890</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <span className="material-symbols-outlined text-4xl text-secondary-fixed">location_on</span>
+                    <div>
+                      <p className="text-on-primary/60 text-sm">Our Studio</p>
+                      <p className="font-bold text-lg">New York City, NY</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-10 md:p-16 lg:p-20 lg:w-1/2 flex flex-col justify-center">
+                <form className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-primary ml-2" htmlFor="name">Full Name</label>
+                      <input className="w-full bg-[#f5f5f7] border-2 border-transparent rounded-2xl px-6 py-4 text-primary focus:border-primary/20 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all duration-300" id="name" placeholder="John Doe" type="text" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-primary ml-2" htmlFor="email">Business Email</label>
+                      <input className="w-full bg-[#f5f5f7] border-2 border-transparent rounded-2xl px-6 py-4 text-primary focus:border-primary/20 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all duration-300" id="email" placeholder="john@company.com" type="email" />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-primary ml-2" htmlFor="service">I&apos;m interested in</label>
+                    <div className="relative">
+                      <select className="w-full bg-[#f5f5f7] border-2 border-transparent rounded-2xl px-6 py-4 text-primary focus:border-primary/20 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all duration-300 appearance-none cursor-pointer" id="service">
+                        <option>Web Development</option>
+                        <option>Mobile App</option>
+                        <option>SEO</option>
+                        <option>Digital Marketing</option>
+                      </select>
+                      <span className="material-symbols-outlined absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-primary/50">expand_more</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-primary ml-2" htmlFor="message">Project Details</label>
+                    <textarea className="w-full bg-[#f5f5f7] border-2 border-transparent rounded-3xl px-6 py-5 text-primary focus:border-primary/20 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all duration-300 resize-none" id="message" placeholder="Tell us about your goals, timeline, and budget..." rows="4"></textarea>
+                  </div>
+                  
+                  <button className="w-full mt-4 bg-primary text-white py-5 rounded-full font-bold text-lg shadow-lg hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      {/* Footer */}
+      <footer className="w-full bg-primary mt-section-gap relative overflow-hidden text-white pt-24 pb-8 border-t border-outline-variant/10">
+        {/* Decorative background glow */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+        
+        <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+            {/* Brand Column */}
+            <div className="lg:col-span-4">
+              <span className="font-display-2xl text-[40px] font-black tracking-tighter block mb-6">IT NESTO</span>
+              <p className="text-white/60 mb-8 max-w-sm text-lg leading-relaxed">
+                Pioneering the future of digital interaction through sophisticated engineering and human-centric design.
+              </p>
+              <div className="flex gap-4">
+                <a className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary hover:border-secondary transition-all duration-300 shadow-sm" href="#"><span className="material-symbols-outlined text-lg">language</span></a>
+                <a className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary hover:border-secondary transition-all duration-300 shadow-sm" href="#"><span className="material-symbols-outlined text-lg">share</span></a>
+                <a className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary hover:border-secondary transition-all duration-300 shadow-sm" href="#"><span className="material-symbols-outlined text-lg">mail</span></a>
+              </div>
+            </div>
+
+            {/* Links Columns */}
+            <div className="lg:col-span-2 lg:col-start-7">
+              <h4 className="font-bold text-xl mb-6">Navigation</h4>
+              <ul className="space-y-4">
+                <li><a className="text-secondary font-bold hover:text-white transition-colors" href="#">Home</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Services</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Portfolio</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Insights</a></li>
+              </ul>
+            </div>
+            
+            <div className="lg:col-span-2">
+              <h4 className="font-bold text-xl mb-6">Company</h4>
+              <ul className="space-y-4">
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">About Us</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Careers</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Contact</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Privacy Policy</a></li>
+              </ul>
+            </div>
+            
+            <div className="lg:col-span-2">
+              <h4 className="font-bold text-xl mb-6">Socials</h4>
+              <ul className="space-y-4">
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">LinkedIn</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Twitter (X)</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Instagram</a></li>
+                <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">Dribbble</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          {/* Bottom Bar */}
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-white/40 text-sm font-medium">© 2026 IT NESTO. All rights reserved.</p>
+            <div className="flex gap-6 text-sm text-white/40 font-medium">
+              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}
