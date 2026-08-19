@@ -192,3 +192,27 @@ body {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #faf8ff; }
 ::-webkit-scrollbar-thumb { background: #00113a; border-radius: 10px; }
+
+.marquee-vertical-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+  gap: 2rem;
+  height: 650px;
+}
+
+.marquee-vertical-content {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 100%;
+  gap: 2rem;
+  animation: scroll-vertical 40s linear infinite;
+}
+
+@keyframes scroll-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}

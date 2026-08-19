@@ -824,113 +824,124 @@ export default function Home() {
               </div>
 
               <div className="lg:col-span-8 overflow-hidden relative">
-                {/* Gradient masks for smooth scrolling edges */}
-                <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
+                {/* Gradient masks for smooth vertical scrolling edges */}
+                <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
 
-                <div className="marquee-container py-8">
-                  <div className="marquee-content" style={{ animationDuration: '30s' }}>
-                    {/* Testimonial Card 1 */}
-                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
-                      {/* Massive Quote Watermark */}
-                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
-                        &quot;
-                      </div>
-                      
-                      <div className="relative z-10">
-                        <div className="flex text-secondary mb-8 gap-1">
-                          {[1,2,3,4,5].map(i => (
-                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                          ))}
+                <div className="marquee-vertical-container py-8">
+                  <div className="marquee-vertical-content" style={{ animationDuration: '40s' }}>
+                    {[
+                      {
+                        text: "The team at IT Nesto didn't just build a site; they built a tool that actively drives our growth. Their real-time dashboard is unmatched.",
+                        initials: "SJ",
+                        name: "Sarah Jenkins",
+                        role: "CTO, Global Finance Corp",
+                        color: "primary"
+                      },
+                      {
+                        text: "Remarkable speed to market. We went from MVP to full deployment in record time. The AR mobile app increased our conversions by 45%.",
+                        initials: "MT",
+                        name: "Marcus Thorne",
+                        role: "Founder, Luxe Retail",
+                        color: "secondary"
+                      },
+                      {
+                        text: "IT Nesto delivered a highly secure, HIPAA-compliant platform. The accessibility features and telehealth integrations transformed our patient care.",
+                        initials: "EC",
+                        name: "Dr. Emily Chen",
+                        role: "Medical Director, National Health Network",
+                        color: "primary"
+                      },
+                      {
+                        text: "Their cloud-based logistics hub with AI route optimization has saved us thousands of hours. Operational costs plummeted by 18% in the first year alone.",
+                        initials: "JW",
+                        name: "James Wilson",
+                        role: "Operations Lead, FastTrack Logistics",
+                        color: "secondary"
+                      }
+                    ].map((review, idx) => (
+                      <div key={idx} className="w-full bg-white p-8 md:p-10 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 transition-all duration-500 relative group overflow-hidden">
+                        {/* Massive Quote Watermark */}
+                        <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                          &quot;
                         </div>
-                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;The team at IT Nesto didn&apos;t just build a site; they built a tool that actively drives our growth. Their attention to technical detail is unmatched.&quot;</p>
                         
-                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
-                          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">SJ</div>
-                          <div>
-                            <h5 className="font-bold text-primary text-lg">Sarah Jenkins</h5>
-                            <p className="text-sm text-on-surface-variant font-medium">CTO, FinTech Solutions</p>
+                        <div className="relative z-10">
+                          <div className="flex text-secondary mb-6 gap-1">
+                            {[1,2,3,4,5].map(i => (
+                              <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            ))}
+                          </div>
+                          <p className="font-body-lg text-lg text-primary leading-relaxed mb-8 italic">&quot;{review.text}&quot;</p>
+                          
+                          <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                            <div className={`w-14 h-14 rounded-full bg-${review.color}/10 flex items-center justify-center text-${review.color} font-bold text-xl`}>{review.initials}</div>
+                            <div>
+                              <h5 className="font-bold text-primary text-lg">{review.name}</h5>
+                              <p className="text-sm text-on-surface-variant font-medium">{review.role}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Testimonial Card 2 */}
-                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
-                      {/* Massive Quote Watermark */}
-                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
-                        &quot;
-                      </div>
-                      
-                      <div className="relative z-10">
-                        <div className="flex text-secondary mb-8 gap-1">
-                          {[1,2,3,4,5].map(i => (
-                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                          ))}
-                        </div>
-                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;Remarkable speed to market. We went from MVP to full deployment in record time with IT Nesto&apos;s agile methodology.&quot;</p>
-                        
-                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
-                          <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xl">MT</div>
-                          <div>
-                            <h5 className="font-bold text-primary text-lg">Marcus Thorne</h5>
-                            <p className="text-sm text-on-surface-variant font-medium">Founder, Skyward Commerce</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
-                  <div className="marquee-content" style={{ animationDuration: '30s' }}>
-                    {/* Duplicate Testimonial Card 1 */}
-                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
-                      {/* Massive Quote Watermark */}
-                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
-                        &quot;
-                      </div>
-                      
-                      <div className="relative z-10">
-                        <div className="flex text-secondary mb-8 gap-1">
-                          {[1,2,3,4,5].map(i => (
-                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                          ))}
+                  {/* Duplicate for infinite effect */}
+                  <div className="marquee-vertical-content" style={{ animationDuration: '40s' }}>
+                    {[
+                      {
+                        text: "The team at IT Nesto didn't just build a site; they built a tool that actively drives our growth. Their real-time dashboard is unmatched.",
+                        initials: "SJ",
+                        name: "Sarah Jenkins",
+                        role: "CTO, Global Finance Corp",
+                        color: "primary"
+                      },
+                      {
+                        text: "Remarkable speed to market. We went from MVP to full deployment in record time. The AR mobile app increased our conversions by 45%.",
+                        initials: "MT",
+                        name: "Marcus Thorne",
+                        role: "Founder, Luxe Retail",
+                        color: "secondary"
+                      },
+                      {
+                        text: "IT Nesto delivered a highly secure, HIPAA-compliant platform. The accessibility features and telehealth integrations transformed our patient care.",
+                        initials: "EC",
+                        name: "Dr. Emily Chen",
+                        role: "Medical Director, National Health Network",
+                        color: "primary"
+                      },
+                      {
+                        text: "Their cloud-based logistics hub with AI route optimization has saved us thousands of hours. Operational costs plummeted by 18% in the first year alone.",
+                        initials: "JW",
+                        name: "James Wilson",
+                        role: "Operations Lead, FastTrack Logistics",
+                        color: "secondary"
+                      }
+                    ].map((review, idx) => (
+                      <div key={idx + 4} className="w-full bg-white p-8 md:p-10 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 transition-all duration-500 relative group overflow-hidden">
+                        {/* Massive Quote Watermark */}
+                        <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                          &quot;
                         </div>
-                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;The team at IT Nesto didn&apos;t just build a site; they built a tool that actively drives our growth. Their attention to technical detail is unmatched.&quot;</p>
                         
-                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
-                          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">SJ</div>
-                          <div>
-                            <h5 className="font-bold text-primary text-lg">Sarah Jenkins</h5>
-                            <p className="text-sm text-on-surface-variant font-medium">CTO, FinTech Solutions</p>
+                        <div className="relative z-10">
+                          <div className="flex text-secondary mb-6 gap-1">
+                            {[1,2,3,4,5].map(i => (
+                              <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            ))}
+                          </div>
+                          <p className="font-body-lg text-lg text-primary leading-relaxed mb-8 italic">&quot;{review.text}&quot;</p>
+                          
+                          <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                            <div className={`w-14 h-14 rounded-full bg-${review.color}/10 flex items-center justify-center text-${review.color} font-bold text-xl`}>{review.initials}</div>
+                            <div>
+                              <h5 className="font-bold text-primary text-lg">{review.name}</h5>
+                              <p className="text-sm text-on-surface-variant font-medium">{review.role}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Duplicate Testimonial Card 2 */}
-                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
-                      {/* Massive Quote Watermark */}
-                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
-                        &quot;
-                      </div>
-                      
-                      <div className="relative z-10">
-                        <div className="flex text-secondary mb-8 gap-1">
-                          {[1,2,3,4,5].map(i => (
-                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                          ))}
-                        </div>
-                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;Remarkable speed to market. We went from MVP to full deployment in record time with IT Nesto&apos;s agile methodology.&quot;</p>
-                        
-                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
-                          <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xl">MT</div>
-                          <div>
-                            <h5 className="font-bold text-primary text-lg">Marcus Thorne</h5>
-                            <p className="text-sm text-on-surface-variant font-medium">Founder, Skyward Commerce</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                 </div>
