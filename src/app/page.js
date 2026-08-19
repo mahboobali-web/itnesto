@@ -2,7 +2,94 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import { projects } from "../data/projects";
+
+// Custom 3D Tilt Card Component for Impact Metrics
+function ImpactCard({ metric, idx }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: 0.1 * idx, ease: "easeOut" }}
+      style={{ perspective: 1000 }}
+      className="relative z-10 w-full h-full"
+    >
+      <motion.div
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        className="relative p-8 rounded-[32px] overflow-hidden border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_50px_rgba(100,251,151,0.2)] bg-gradient-to-br from-[#0a1121] to-[#12223a] min-h-[240px] flex flex-col justify-end w-full h-full cursor-pointer group"
+      >
+        {/* Dynamic Inner Glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[var(--color-secondary)]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none" />
+        
+        {/* Animated Contextual Background Shapes */}
+        <motion.div 
+          style={{ translateZ: 20 }}
+          className="absolute -top-10 -right-10 w-48 h-48 bg-[var(--color-secondary)]/10 rounded-full blur-[40px] group-hover:bg-[var(--color-secondary)]/30 group-hover:scale-150 transition-all duration-700 pointer-events-none"
+        />
+        <motion.div 
+          style={{ translateZ: 40 }}
+          className="absolute -bottom-10 -left-10 w-48 h-48 bg-[var(--color-secondary-container)]/10 rounded-full blur-[40px] group-hover:bg-[var(--color-secondary-container)]/30 group-hover:scale-150 transition-all duration-700 pointer-events-none"
+        />
+
+        {/* Glass Shimmer Overlay */}
+        <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px] z-0 pointer-events-none"></div>
+        
+        {/* Foreground Content with Parallax (translateZ) */}
+        <div className="relative z-10 flex flex-col h-full transform-gpu" style={{ transformStyle: "preserve-3d" }}>
+          <motion.div 
+            style={{ translateZ: 60 }}
+            className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-8 border border-white/20 group-hover:bg-[var(--color-secondary)]/20 group-hover:border-[var(--color-secondary)]/40 transition-all duration-500 backdrop-blur-md shadow-[0_4px_15px_rgba(0,0,0,0.1)] group-hover:shadow-[0_0_25px_rgba(100,251,151,0.2)]"
+          >
+            <span className="material-symbols-outlined text-white/90 text-2xl group-hover:text-[var(--color-secondary)] group-hover:scale-110 transition-all duration-500">{metric.icon}</span>
+          </motion.div>
+          
+          <motion.div style={{ translateZ: 40 }}>
+            <div className="text-4xl md:text-5xl font-display-xl font-extrabold text-white mb-3 tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80 transition-all duration-300">
+              {metric.value}<span className="text-[var(--color-secondary)] drop-shadow-[0_0_12px_rgba(100,251,151,0.4)] group-hover:text-[var(--color-secondary-container)] transition-colors duration-300">{metric.suffix}</span>
+            </div>
+            <div className="text-[12px] font-bold text-white/70 uppercase tracking-[0.2em] group-hover:text-white transition-colors duration-300">{metric.label}</div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const containerRef = useRef(null);
@@ -342,19 +429,19 @@ export default function Home() {
 
               {/* Floating Live Telemetry Node 1 - Project Status */}
               <motion.div 
-                animate={{ y: [0, -20, 0], opacity: [0.8, 1, 0.8] }} 
+                animate={{ y: [0, -20, 0], opacity: [0.95, 1, 0.95] }} 
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-12 right-12 hidden lg:flex items-center gap-4 bg-white/5 backdrop-blur-2xl border border-white/20 p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20"
+                className="absolute top-12 right-12 hidden lg:flex items-center gap-4 bg-[#060B14] border border-white/15 p-5 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
               >
                 <div className="relative flex h-5 w-5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75 duration-1000"></span>
-                  <span className="relative inline-flex rounded-full h-5 w-5 bg-secondary shadow-[0_0_15px_rgba(46,204,113,0.8)] border-2 border-[#1B2A47]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75 duration-1000"></span>
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-[#10B981] shadow-[0_0_15px_rgba(16,185,129,0.6)] border-2 border-[#060B14]"></span>
                 </div>
                 <div>
-                  <div className="text-[10px] font-bold text-white/50 tracking-widest uppercase mb-0.5">Active Sprints</div>
-                  <div className="text-sm font-bold text-white flex items-center gap-2">
+                  <div className="text-[10px] font-bold text-white/80 tracking-widest uppercase mb-0.5">Active Sprints</div>
+                  <div className="text-base font-bold text-white flex items-center gap-2">
                     12 Projects
-                    <span className="text-[10px] text-secondary font-mono bg-secondary/10 px-2 py-0.5 rounded-full border border-secondary/20">On Track</span>
+                    <span className="text-[10px] text-[#34D399] font-mono bg-[#10B981]/15 px-2 py-0.5 rounded-full border border-[#10B981]/30">On Track</span>
                   </div>
                 </div>
               </motion.div>
@@ -363,17 +450,17 @@ export default function Home() {
               <motion.div 
                 animate={{ y: [0, 15, 0] }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute top-1/3 right-32 hidden lg:block w-64 bg-white/5 backdrop-blur-2xl border border-white/20 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20"
+                className="absolute top-1/3 right-32 hidden lg:block w-72 bg-[#060B14] border border-white/15 p-6 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
               >
-                <div className="text-[10px] font-bold text-white/50 tracking-widest uppercase mb-4 flex justify-between items-center">
+                <div className="text-[10px] font-bold text-white/80 tracking-widest uppercase mb-4 flex justify-between items-center">
                   <span>Weekly Deployments</span>
-                  <span className="text-secondary font-mono bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20">48+</span>
+                  <span className="text-[#34D399] font-mono bg-[#10B981]/15 px-2 py-0.5 rounded border border-[#10B981]/30">48+</span>
                 </div>
-                <div className="flex items-end gap-1.5 h-20">
+                <div className="flex items-end gap-2 h-20">
                   {[40, 70, 45, 90, 65, 85, 30, 60, 50, 75, 85, 40].map((h, i) => (
                     <motion.div 
                       key={i}
-                      className="w-full bg-gradient-to-t from-secondary/50 to-secondary rounded-t-sm shadow-[0_0_8px_rgba(46,204,113,0.5)]"
+                      className="w-full bg-gradient-to-t from-[#10B981]/50 to-[#10B981] rounded-t-sm shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       animate={{ height: [`${h}%`, `${Math.max(10, h - 30 + Math.random()*60)}%`, `${h}%`] }}
                       transition={{ duration: 1.5 + Math.random(), repeat: Infinity, ease: "easeInOut" }}
                       style={{ height: `${h}%` }}
@@ -386,22 +473,22 @@ export default function Home() {
               <motion.div 
                 animate={{ y: [0, -10, 0] }} 
                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                className="absolute bottom-1/4 right-16 hidden lg:flex items-center gap-5 bg-white/5 backdrop-blur-2xl border border-white/20 p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-20"
+                className="absolute bottom-1/4 right-16 hidden lg:flex items-center gap-5 bg-[#060B14] border border-white/15 p-5 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
               >
-                <div className="relative w-12 h-12 border border-secondary/30 rounded-full flex items-center justify-center">
+                <div className="relative w-12 h-12 border border-[#10B981]/40 rounded-full flex items-center justify-center">
                   <motion.div 
-                    className="absolute w-full h-full border-t border-secondary rounded-full"
+                    className="absolute w-full h-full border-t border-[#10B981] rounded-full"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   ></motion.div>
-                  <div className="w-1.5 h-1.5 bg-secondary rounded-full shadow-[0_0_10px_rgba(46,204,113,1)]"></div>
-                  <div className="absolute top-2 right-2 w-1 h-1 bg-white rounded-full"></div>
-                  <div className="absolute bottom-3 left-3 w-1 h-1 bg-white/50 rounded-full"></div>
+                  <div className="w-2 h-2 bg-[#10B981] rounded-full shadow-[0_0_12px_rgba(16,185,129,1)]"></div>
+                  <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_5px_rgba(255,255,255,0.8)]"></div>
+                  <div className="absolute bottom-2.5 left-2.5 w-1 h-1 bg-white/70 rounded-full"></div>
                 </div>
                 <div>
-                  <div className="text-[10px] font-bold text-white/50 tracking-widest uppercase mb-1">Global Client Reach</div>
-                  <div className="text-xl font-bold text-white font-mono tracking-tight">
-                    <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 0.5, repeat: Infinity }}>+</motion.span>24 <span className="text-sm font-sans text-white/70">Countries</span>
+                  <div className="text-[10px] font-bold text-white/80 tracking-widest uppercase mb-1">Global Client Reach</div>
+                  <div className="text-2xl font-bold text-white font-mono tracking-tight">
+                    <motion.span animate={{ opacity: [1, 0.5, 1] }} transition={{ duration: 0.5, repeat: Infinity }}>+</motion.span>24 <span className="text-sm font-sans text-white/80">Countries</span>
                   </div>
                 </div>
               </motion.div>
@@ -445,76 +532,119 @@ export default function Home() {
             {/* Impact Metrics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 lg:mt-12">
               {[
-                { icon: "handshake", value: "99", suffix: "%", label: "Client Retention" },
-                { icon: "rocket_launch", value: "250", suffix: "+", label: "Products Launched" },
-                { icon: "trophy", value: "35", suffix: "+", label: "Industry Awards" },
-                { icon: "language", value: "24", suffix: "/7", label: "Global Support" }
+                { icon: "handshake", value: "99", suffix: "%", label: "Client Retention", id: "retention" },
+                { icon: "rocket_launch", value: "250", suffix: "+", label: "Products Launched", id: "launched" },
+                { icon: "trophy", value: "35", suffix: "+", label: "Industry Awards", id: "awards" },
+                { icon: "language", value: "24", suffix: "/7", label: "Global Support", id: "support" }
               ].map((metric, idx) => (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: 0.3 + (idx * 0.15), ease: "easeOut" }}
-                  className="relative p-8 rounded-[32px] bg-gradient-to-br from-[#0B1526] via-primary to-[#182640] overflow-hidden border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.15)] hover:-translate-y-3 hover:shadow-[0_20px_40px_rgba(46,204,113,0.2)] transition-all duration-500 group"
-                >
-                  {/* Internal Glow Effect */}
-                  <div className="absolute -top-12 -right-12 w-40 h-40 bg-secondary/10 rounded-full blur-[40px] group-hover:bg-secondary/30 transition-colors duration-700"></div>
-                  
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-all duration-500 backdrop-blur-md shadow-inner">
-                      <span className="material-symbols-outlined text-white/70 text-2xl group-hover:text-secondary transition-colors duration-500">{metric.icon}</span>
-                    </div>
-                    <div className="text-4xl md:text-5xl font-display-xl font-extrabold text-white mb-3 tracking-tight">
-                      {metric.value}<span className="text-secondary">{metric.suffix}</span>
-                    </div>
-                    <div className="text-[11px] font-bold text-white/50 uppercase tracking-[0.2em]">{metric.label}</div>
-                  </div>
-                </motion.div>
+                <ImpactCard key={idx} metric={metric} idx={idx} />
               ))}
             </div>
           </div>
         </section>
 
         {/* Services Section */}
-        <section className="py-section-gap bg-white border-y border-outline-variant/10" id="services">
+        <section className="py-section-gap bg-[#fdfdfd] border-y border-outline-variant/10" id="services">
           <div className="max-w-container-max mx-auto px-margin-mobile">
             <div className="text-center mb-20 fade-up">
-              <h2 className="font-display-xl text-headline-lg-mobile md:text-[56px] text-primary mb-4 font-extrabold tracking-tight">Strategic Digital Services</h2>
+              <span className="inline-block px-4 py-1 mb-4 text-[var(--color-secondary)] font-bold text-[11px] md:text-xs uppercase tracking-[0.15em]">
+                A Structured System, Not Just A Visual Identity
+              </span>
+              <h2 className="font-display-xl text-headline-lg-mobile md:text-[56px] text-primary mb-4 font-extrabold tracking-tight">
+                Strategic <span className="text-[var(--color-secondary)]">Digital Services</span>
+              </h2>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto text-lg">Engineered solutions for every stage of your digital journey.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {[
-                { icon: "terminal", title: "Website\nDevelopment", desc: "Custom Next.js & React ecosystems optimized for speed and conversion.", delay: "0ms" },
-                { icon: "smartphone", title: "Mobile\nApps", desc: "Cross-platform Flutter and React Native experiences that feel native.", delay: "100ms" },
-                { icon: "trending_up", title: "SEO\nSolutions", desc: "Technical SEO and content strategies that dominate search rankings.", delay: "200ms" },
-                { icon: "hub", title: "Digital\nMarketing", desc: "Full-funnel marketing to ensure your tech reaches its target audience.", delay: "300ms" },
-                { icon: "edit_document", title: "Content\nWriting", desc: "Compelling, SEO-optimized copy that engages users and drives conversions.", delay: "400ms" },
-                { icon: "palette", title: "Graphic\nDesign", desc: "Stunning visual identities, branding, and assets that captivate your audience.", delay: "500ms" },
-                { icon: "smart_toy", title: "AI\nWorkflows", desc: "Intelligent automation and AI integrations to supercharge your operations.", delay: "600ms" },
-                { icon: "developer_board", title: "Custom\nSoftware", desc: "Bespoke enterprise applications tailored specifically to your business logic.", delay: "700ms" }
+                { icon: "terminal", title: "Website Development", desc: "Custom Next.js & React ecosystems optimized for speed and conversion.", delay: "0ms" },
+                { icon: "smartphone", title: "Mobile Apps", desc: "Cross-platform Flutter and React Native experiences that feel native.", delay: "100ms" },
+                { icon: "trending_up", title: "SEO Solutions", desc: "Technical SEO and content strategies that dominate search rankings.", delay: "200ms" },
+                { icon: "hub", title: "Digital Marketing", desc: "Full-funnel marketing to ensure your tech reaches its target audience.", delay: "300ms" },
+                { icon: "edit_document", title: "Content Writing", desc: "Compelling, SEO-optimized copy that engages users and drives conversions.", delay: "400ms" },
+                { icon: "palette", title: "Graphic Design", desc: "Stunning visual identities, branding, and assets that captivate your audience.", delay: "500ms" },
+                { icon: "smart_toy", title: "AI Workflows", desc: "Intelligent automation and AI integrations to supercharge your operations.", delay: "600ms" },
+                { icon: "developer_board", title: "Custom Software", desc: "Bespoke enterprise applications tailored specifically to your business logic.", delay: "700ms" }
               ].map((service, idx) => (
-                <div key={idx} className="relative p-10 rounded-[32px] bg-primary overflow-hidden border border-white/10 shadow-2xl hover:-translate-y-2 hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: service.delay }}>
-                  {/* Internal Glow Effect */}
-                  <div className="absolute -bottom-16 -right-16 w-56 h-56 bg-secondary/15 rounded-full blur-[60px] group-hover:bg-secondary/30 transition-colors duration-700"></div>
+                <div key={idx} className="relative p-8 md:p-10 rounded-[24px] bg-gradient-to-br from-[#0a1121] to-[#12223a] overflow-hidden shadow-[0_20px_50px_rgba(10,21,16,0.15)] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(100,251,151,0.15)] transition-all duration-500 group fade-up flex flex-col" style={{ transitionDelay: service.delay }}>
+                  {/* Subtle Texture/Grain overlay */}
+                  <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}></div>
+                  
+                  {/* Internal Texture/Glow Effect */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[var(--color-secondary)]/10 via-transparent to-transparent opacity-80 z-0"></div>
                   
                   <div className="relative z-10 flex flex-col h-full">
-                    <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-secondary/20 group-hover:border-secondary/40 transition-all duration-500 backdrop-blur-md">
-                      <span className="material-symbols-outlined text-white/70 text-3xl group-hover:text-secondary transition-colors duration-500">{service.icon}</span>
+                    {/* Icon */}
+                    <div className="w-[52px] h-[52px] rounded-2xl bg-[var(--color-secondary)]/5 flex items-center justify-center mb-8 border border-[var(--color-secondary)]/20 shadow-[inset_0_0_15px_rgba(100,251,151,0.05)] group-hover:bg-[var(--color-secondary)]/15 transition-colors duration-500">
+                      <span className="material-symbols-outlined text-[var(--color-secondary)] text-[26px]">{service.icon}</span>
                     </div>
-                    <h3 className="text-[28px] leading-[1.1] text-white mb-5 font-bold tracking-tight">
-                      {service.title.split('\n').map((line, i) => (
-                        <span key={i}>
-                          {line}
-                          {i === 0 && <br />}
-                        </span>
-                      ))}
+                    
+                    {/* Title */}
+                    <h3 className="text-[22px] leading-[1.3] text-white font-bold tracking-tight mb-5">
+                      {service.title}
                     </h3>
-                    <p className="text-white/60 leading-relaxed text-sm mt-auto">
+                    
+                    {/* Separator Line */}
+                    <div className="w-10 h-[2px] bg-[var(--color-secondary)] mb-6 rounded-full opacity-70 group-hover:w-16 transition-all duration-500"></div>
+                    
+                    {/* Description */}
+                    <p className="text-white/70 leading-[1.6] text-[15px] flex-grow">
                       {service.desc}
                     </p>
+                    
+                    {/* Bottom Arrow Button */}
+                    <div className="mt-10 w-11 h-11 rounded-full border border-[var(--color-secondary)]/20 flex items-center justify-center group-hover:border-[var(--color-secondary)]/60 group-hover:bg-[var(--color-secondary)]/10 transition-all duration-300 self-start cursor-pointer">
+                      <span className="material-symbols-outlined text-white/50 group-hover:text-[var(--color-secondary)] transition-colors duration-300 text-xl">arrow_forward</span>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio Section */}
+        <section className="py-section-gap bg-[#fdfdfd]" id="portfolio">
+          <div className="max-w-container-max mx-auto px-margin-mobile">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 fade-up">
+              <div className="max-w-2xl">
+                <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-[11px] md:text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10 mb-6">Our Work</span>
+                <h2 className="font-display-xl text-headline-lg-mobile md:text-[56px] text-primary mb-6 font-extrabold tracking-tight leading-tight">Featured Projects</h2>
+                <p className="font-body-lg text-body-lg text-on-surface-variant text-lg leading-relaxed">A showcase of our recent engineering and design transformations. Click any project to view the case study.</p>
+              </div>
+              <button className="mt-8 md:mt-0 flex items-center gap-2 text-primary font-bold hover:text-[var(--color-secondary-container)] transition-colors group">
+                View All Projects
+                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {projects.map((project, idx) => (
+                <Link href={`/projects/${project.slug}`} key={idx} className="group relative rounded-[32px] overflow-hidden aspect-[4/3] md:aspect-[16/11] fade-up shadow-lg cursor-pointer bg-slate-100 border border-outline-variant/10 block">
+                  <Image 
+                    src={project.coverImage} 
+                    alt={project.title} 
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1526]/90 via-[#0B1526]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                  
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md text-white font-bold text-[11px] rounded-full uppercase tracking-[0.1em] border border-white/20 mb-4">
+                      {project.category}
+                    </span>
+                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">{project.title}</h3>
+                    <div className="flex items-center gap-2 text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75">
+                      <span className="font-bold text-sm uppercase tracking-wider">View Case Study</span>
+                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </div>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -543,22 +673,22 @@ export default function Home() {
                 { num: "05", title: "Testing", icon: "verified", desc: "Rigorous quality assurance to ensure flawless functionality and security across all devices." },
                 { num: "06", title: "Launch", icon: "rocket_launch", desc: "Deploying your solution to the world with precision, followed by ongoing support and optimization." }
               ].map((step, idx) => (
-                <div key={idx} className="group relative p-10 rounded-[32px] bg-white border border-outline-variant/20 hover:bg-primary transition-colors duration-500 overflow-hidden shadow-sm hover:shadow-2xl fade-up" style={{ transitionDelay: `${idx * 100}ms` }}>
+                <div key={idx} className="group relative p-10 rounded-[32px] bg-white border border-transparent hover:bg-primary transition-all duration-500 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.2)] hover:-translate-y-2 fade-up" style={{ transitionDelay: `${idx * 100}ms` }}>
                   {/* Massive Watermark Number */}
-                  <div className="absolute -bottom-8 -right-4 font-display-2xl text-[120px] font-black text-outline-variant/10 group-hover:text-secondary/10 transition-colors duration-500 pointer-events-none select-none">
+                  <div className="absolute -bottom-8 -right-4 font-display-2xl text-[120px] font-black text-black/[0.03] group-hover:text-secondary/10 transition-colors duration-500 pointer-events-none select-none">
                     {step.num}
                   </div>
                   
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="flex items-center justify-between mb-8">
-                      <div className="w-16 h-16 rounded-2xl bg-primary/5 group-hover:bg-white/10 flex items-center justify-center transition-colors duration-500 backdrop-blur-sm">
+                      <div className="w-16 h-16 rounded-2xl bg-slate-100 group-hover:bg-white/10 flex items-center justify-center transition-colors duration-500 backdrop-blur-sm border border-slate-200 group-hover:border-transparent">
                         <span className="material-symbols-outlined text-primary group-hover:text-secondary text-3xl transition-colors duration-500">{step.icon}</span>
                       </div>
-                      <span className="text-primary/30 group-hover:text-secondary/50 font-bold text-xl tracking-widest transition-colors duration-500">{step.num}</span>
+                      <span className="text-slate-300 group-hover:text-secondary/50 font-bold text-xl tracking-widest transition-colors duration-500">{step.num}</span>
                     </div>
                     
                     <h3 className="text-2xl font-bold text-primary group-hover:text-white mb-4 transition-colors duration-500">{step.title}</h3>
-                    <p className="text-on-surface-variant group-hover:text-white/70 leading-relaxed text-sm transition-colors duration-500">
+                    <p className="text-slate-600 group-hover:text-white/70 leading-relaxed text-[15px] transition-colors duration-500">
                       {step.desc}
                     </p>
                   </div>
