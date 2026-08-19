@@ -821,67 +821,113 @@ export default function Home() {
                 <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10 mb-6">Client Success</span>
                 <h2 className="font-display-xl text-[48px] leading-[1.1] text-primary mb-6 font-extrabold tracking-tight">Trusted by Industry Leaders.</h2>
                 <p className="text-on-surface-variant text-lg leading-relaxed mb-10">We don&apos;t just build software; we build lasting digital footprints that drive tangible business growth.</p>
-                <div className="flex gap-4">
-                  <button className="w-14 h-14 rounded-full bg-white border border-outline-variant/20 shadow-sm flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary hover:shadow-xl hover:-translate-x-1 transition-all duration-300 group">
-                    <span className="material-symbols-outlined text-primary group-hover:text-white transition-colors">west</span>
-                  </button>
-                  <button className="w-14 h-14 rounded-full bg-white border border-outline-variant/20 shadow-sm flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary hover:shadow-xl hover:translate-x-1 transition-all duration-300 group">
-                    <span className="material-symbols-outlined text-primary group-hover:text-white transition-colors">east</span>
-                  </button>
-                </div>
               </div>
 
               <div className="lg:col-span-8 overflow-hidden relative">
                 {/* Gradient masks for smooth scrolling edges */}
                 <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-[#f5f5f7] to-transparent z-10 pointer-events-none"></div>
 
-                <div className="flex gap-6 overflow-x-auto pb-12 pt-8 snap-x snap-mandatory no-scrollbar pr-24">
-                  
-                  {/* Testimonial Card 1 */}
-                  <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] snap-center shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 fade-up relative group overflow-hidden">
-                    {/* Massive Quote Watermark */}
-                    <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
-                      &quot;
-                    </div>
-                    
-                    <div className="relative z-10">
-                      <div className="flex text-secondary mb-8 gap-1">
-                        {[1,2,3,4,5].map(i => (
-                          <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                        ))}
+                <div className="marquee-container py-8">
+                  <div className="marquee-content" style={{ animationDuration: '30s' }}>
+                    {/* Testimonial Card 1 */}
+                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                      {/* Massive Quote Watermark */}
+                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                        &quot;
                       </div>
-                      <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;The team at IT Nesto didn&apos;t just build a site; they built a tool that actively drives our growth. Their attention to technical detail is unmatched.&quot;</p>
                       
-                      <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
-                        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">SJ</div>
-                        <div>
-                          <h5 className="font-bold text-primary text-lg">Sarah Jenkins</h5>
-                          <p className="text-sm text-on-surface-variant font-medium">CTO, FinTech Solutions</p>
+                      <div className="relative z-10">
+                        <div className="flex text-secondary mb-8 gap-1">
+                          {[1,2,3,4,5].map(i => (
+                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                          ))}
+                        </div>
+                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;The team at IT Nesto didn&apos;t just build a site; they built a tool that actively drives our growth. Their attention to technical detail is unmatched.&quot;</p>
+                        
+                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">SJ</div>
+                          <div>
+                            <h5 className="font-bold text-primary text-lg">Sarah Jenkins</h5>
+                            <p className="text-sm text-on-surface-variant font-medium">CTO, FinTech Solutions</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Testimonial Card 2 */}
+                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                      {/* Massive Quote Watermark */}
+                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                        &quot;
+                      </div>
+                      
+                      <div className="relative z-10">
+                        <div className="flex text-secondary mb-8 gap-1">
+                          {[1,2,3,4,5].map(i => (
+                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                          ))}
+                        </div>
+                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;Remarkable speed to market. We went from MVP to full deployment in record time with IT Nesto&apos;s agile methodology.&quot;</p>
+                        
+                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                          <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xl">MT</div>
+                          <div>
+                            <h5 className="font-bold text-primary text-lg">Marcus Thorne</h5>
+                            <p className="text-sm text-on-surface-variant font-medium">Founder, Skyward Commerce</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Testimonial Card 2 */}
-                  <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] snap-center shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 fade-up relative group overflow-hidden" style={{ transitionDelay: '100ms' }}>
-                    {/* Massive Quote Watermark */}
-                    <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
-                      &quot;
-                    </div>
-                    
-                    <div className="relative z-10">
-                      <div className="flex text-secondary mb-8 gap-1">
-                        {[1,2,3,4,5].map(i => (
-                          <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                        ))}
+                  <div className="marquee-content" style={{ animationDuration: '30s' }}>
+                    {/* Duplicate Testimonial Card 1 */}
+                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                      {/* Massive Quote Watermark */}
+                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                        &quot;
                       </div>
-                      <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;Remarkable speed to market. We went from MVP to full deployment in record time with IT Nesto&apos;s agile methodology.&quot;</p>
                       
-                      <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
-                        <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xl">MT</div>
-                        <div>
-                          <h5 className="font-bold text-primary text-lg">Marcus Thorne</h5>
-                          <p className="text-sm text-on-surface-variant font-medium">Founder, Skyward Commerce</p>
+                      <div className="relative z-10">
+                        <div className="flex text-secondary mb-8 gap-1">
+                          {[1,2,3,4,5].map(i => (
+                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                          ))}
+                        </div>
+                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;The team at IT Nesto didn&apos;t just build a site; they built a tool that actively drives our growth. Their attention to technical detail is unmatched.&quot;</p>
+                        
+                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">SJ</div>
+                          <div>
+                            <h5 className="font-bold text-primary text-lg">Sarah Jenkins</h5>
+                            <p className="text-sm text-on-surface-variant font-medium">CTO, FinTech Solutions</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Duplicate Testimonial Card 2 */}
+                    <div className="min-w-[340px] md:min-w-[420px] bg-white p-10 md:p-12 rounded-[32px] shadow-lg hover:shadow-2xl border border-outline-variant/10 hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 relative group overflow-hidden">
+                      {/* Massive Quote Watermark */}
+                      <div className="absolute -top-6 -right-6 text-[180px] font-serif font-black text-primary/5 group-hover:text-primary/10 transition-colors duration-500 select-none pointer-events-none leading-none">
+                        &quot;
+                      </div>
+                      
+                      <div className="relative z-10">
+                        <div className="flex text-secondary mb-8 gap-1">
+                          {[1,2,3,4,5].map(i => (
+                            <span key={i} className="material-symbols-outlined text-xl drop-shadow-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                          ))}
+                        </div>
+                        <p className="font-body-lg text-lg text-primary leading-relaxed mb-10 italic">&quot;Remarkable speed to market. We went from MVP to full deployment in record time with IT Nesto&apos;s agile methodology.&quot;</p>
+                        
+                        <div className="flex items-center gap-5 border-t border-outline-variant/10 pt-6">
+                          <div className="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xl">MT</div>
+                          <div>
+                            <h5 className="font-bold text-primary text-lg">Marcus Thorne</h5>
+                            <p className="text-sm text-on-surface-variant font-medium">Founder, Skyward Commerce</p>
+                          </div>
                         </div>
                       </div>
                     </div>
