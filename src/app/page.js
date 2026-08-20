@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
@@ -94,6 +94,7 @@ function ImpactCard({ metric, idx }) {
 export default function Home() {
   const containerRef = useRef(null);
   const shaderRef = useRef(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Initialize Three.js Ecosystem Animation
   useEffect(() => {
@@ -223,9 +224,9 @@ export default function Home() {
       {/* Top Navigation Bar */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/90 border-b border-outline-variant/20 shadow-sm h-20 transition-all">
         <nav className="flex justify-between items-center px-margin-mobile h-full w-full max-w-container-max mx-auto">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-3xl">grid_view</span>
-            <span className="text-primary text-3xl font-extrabold tracking-tighter">IT NESTO</span>
+          <div className="flex items-center gap-2 relative z-50">
+            <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">grid_view</span>
+            <span className="text-primary text-2xl md:text-3xl font-extrabold tracking-tighter">IT NESTO</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a className="font-label-md text-label-md text-secondary font-bold hover:opacity-80 transition-opacity" href="#">Home</a>
@@ -236,10 +237,26 @@ export default function Home() {
               Start Your Project
             </button>
           </div>
-          <button className="md:hidden text-primary">
-            <span className="material-symbols-outlined text-3xl">menu</span>
+          <button 
+            className="md:hidden text-primary relative z-50 w-10 h-10 flex flex-col justify-center items-center gap-1.5"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <span className={`w-6 h-0.5 bg-primary transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+            <span className={`w-6 h-0.5 bg-primary transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`w-6 h-0.5 bg-primary transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
           </button>
         </nav>
+
+        {/* Mobile Menu Overlay */}
+        <div className={`fixed inset-0 bg-surface z-40 transition-transform duration-500 ease-in-out flex flex-col justify-center items-center gap-8 md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <a className="text-3xl font-display-xl font-bold text-primary hover:text-secondary transition-colors" href="#" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
+            <a className="text-3xl font-display-xl font-bold text-on-surface-variant hover:text-secondary transition-colors" href="#services" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
+            <a className="text-3xl font-display-xl font-bold text-on-surface-variant hover:text-secondary transition-colors" href="#portfolio" onClick={() => setIsMobileMenuOpen(false)}>Portfolio</a>
+            <a className="text-3xl font-display-xl font-bold text-on-surface-variant hover:text-secondary transition-colors" href="#about" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+            <button className="mt-8 bg-primary text-on-primary px-8 py-4 rounded-full font-bold text-lg hover:shadow-lg transition-all active:scale-95 w-[80%] max-w-[300px]">
+              Start Your Project
+            </button>
+        </div>
       </header>
 
       <main>
@@ -247,8 +264,8 @@ export default function Home() {
         <section className="relative pt-[160px] pb-section-gap overflow-hidden min-h-screen flex items-center">
           <div className="max-w-container-max mx-auto px-margin-mobile grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center relative z-10">
             <div className="fade-up visible">
-              <h1 className="font-display-2xl font-bold text-[50px] leading-[1.2] md:text-[72px] md:leading-[1.1] text-primary mb-8 tracking-tight">
-                Building Powerful <span className="inline-block text-secondary-container bg-primary px-4 pb-2 pt-1 mx-1 rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
+              <h1 className="font-display-2xl font-bold text-[40px] leading-[1.15] md:text-[50px] lg:text-[72px] md:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
+                Building Powerful <span className="inline-block text-secondary-container bg-primary px-3 pb-1 pt-1 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-xl md:rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed text-lg">
                 We merge architectural precision with high-growth engineering to build scalable products for enterprise leaders and visionary startups.
@@ -263,8 +280,8 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="relative h-[400px] md:h-[600px] w-full flex items-center justify-center fade-up visible" style={{ transitionDelay: '200ms' }}>
-              <div className="relative w-full h-full max-w-lg mx-auto">
+            <div className="relative h-[400px] md:h-[600px] w-full flex items-center justify-center fade-up visible mt-8 lg:mt-0" style={{ transitionDelay: '200ms' }}>
+              <div className="relative w-full h-full max-w-lg mx-auto transform scale-75 sm:scale-90 md:scale-100 origin-center">
                 {/* Floating Card 1 - Web Dev */}
                 <motion.div 
                   animate={{ y: [0, -20, 0] }} 
@@ -401,7 +418,7 @@ export default function Home() {
         <section className="pt-section-gap pb-20 relative" id="about">
           <div className="max-w-container-max mx-auto px-margin-mobile">
             {/* Cinematic Image Card */}
-            <div className="relative rounded-[40px] overflow-hidden shadow-elevation-2 h-[600px] lg:h-[700px] fade-up bg-primary group">
+            <div className="relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-elevation-2 h-[500px] md:h-[600px] lg:h-[700px] fade-up bg-primary group">
               
               {/* Ken Burns Animated Background Image */}
               <motion.img 
@@ -494,15 +511,15 @@ export default function Home() {
               </motion.div>
 
               {/* High-Contrast Floating Content Box */}
-              <div className="absolute bottom-6 left-6 right-6 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-8 lg:p-12 rounded-[32px] shadow-2xl border border-white/50 fade-up" style={{ transitionDelay: '200ms' }}>
-                <div className="flex items-center gap-4 mb-6">
+              <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-6 md:p-8 lg:p-12 rounded-[24px] md:rounded-[32px] shadow-2xl border border-white/50 fade-up" style={{ transitionDelay: '200ms' }}>
+                <div className="flex items-center gap-4 mb-4 md:mb-6">
                   <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10">Our Mission</span>
                   <div className="h-px bg-primary/10 flex-1"></div>
                 </div>
                 
-                <h2 className="text-[40px] md:text-[52px] leading-[1.1] text-primary mb-6 font-extrabold tracking-tight">Redefining Digital Excellence.</h2>
+                <h2 className="text-[32px] md:text-[40px] lg:text-[52px] leading-[1.1] text-primary mb-4 md:mb-6 font-extrabold tracking-tight">Redefining Digital Excellence.</h2>
                 
-                <p className="text-on-surface-variant mb-8 leading-relaxed text-lg">
+                <p className="text-on-surface-variant mb-6 md:mb-8 leading-relaxed text-base md:text-lg">
                   We believe technology should be as elegant as it is powerful. We bridge the gap between complex business logic and intuitive user experiences.
                 </p>
                 
@@ -522,15 +539,15 @@ export default function Home() {
                   </div>
                 </div>
 
-                <button className="magnetic-btn bg-primary text-on-primary px-8 py-4 rounded-full font-button text-button inline-flex items-center gap-3 hover:bg-secondary hover:text-on-secondary transition-colors duration-300 shadow-lg">
+                <button className="magnetic-btn bg-primary text-on-primary px-6 py-3 md:px-8 md:py-4 rounded-full font-button text-sm md:text-base inline-flex items-center gap-3 hover:bg-secondary hover:text-on-secondary transition-colors duration-300 shadow-lg">
                   Discover Our Approach
-                  <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                  <span className="material-symbols-outlined text-lg md:text-xl">arrow_forward</span>
                 </button>
               </div>
             </div>
 
             {/* Impact Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 lg:mt-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8 lg:mt-12">
               {[
                 { icon: "handshake", value: "99", suffix: "%", label: "Client Retention", id: "retention" },
                 { icon: "rocket_launch", value: "250", suffix: "+", label: "Products Launched", id: "launched" },
@@ -638,8 +655,8 @@ export default function Home() {
                     <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md text-white font-bold text-[11px] rounded-full uppercase tracking-[0.1em] border border-white/20 mb-4">
                       {project.category}
                     </span>
-                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">{project.title}</h3>
-                    <div className="flex items-center gap-2 text-[var(--color-secondary)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75">
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 md:mb-3">{project.title}</h3>
+                    <div className="flex items-center gap-2 text-[var(--color-secondary)] opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75">
                       <span className="font-bold text-sm uppercase tracking-wider">View Case Study</span>
                       <span className="material-symbols-outlined text-sm">arrow_forward</span>
                     </div>
@@ -673,7 +690,7 @@ export default function Home() {
                 { num: "05", title: "Testing", icon: "verified", desc: "Rigorous quality assurance to ensure flawless functionality and security across all devices." },
                 { num: "06", title: "Launch", icon: "rocket_launch", desc: "Deploying your solution to the world with precision, followed by ongoing support and optimization." }
               ].map((step, idx) => (
-                <div key={idx} className="group relative p-10 rounded-[32px] bg-white border border-transparent hover:bg-primary transition-all duration-500 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.2)] hover:-translate-y-2 fade-up" style={{ transitionDelay: `${idx * 100}ms` }}>
+                <div key={idx} className="group relative p-8 md:p-10 rounded-[32px] bg-white border border-transparent hover:bg-primary transition-all duration-500 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.2)] hover:-translate-y-2 fade-up" style={{ transitionDelay: `${idx * 100}ms` }}>
                   {/* Massive Watermark Number */}
                   <div className="absolute -bottom-8 -right-4 font-display-2xl text-[120px] font-black text-black/[0.03] group-hover:text-secondary/10 transition-colors duration-500 pointer-events-none select-none">
                     {step.num}
@@ -767,7 +784,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
               {/* Stat 1 */}
-              <div className="text-center flex flex-col items-center justify-center p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up">
+              <div className="text-center flex flex-col items-center justify-center p-8 md:p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20 group-hover:bg-secondary group-hover:border-transparent transition-colors duration-500">
                     <span className="material-symbols-outlined text-secondary group-hover:text-primary transition-colors duration-500">public</span>
@@ -780,7 +797,7 @@ export default function Home() {
               </div>
 
               {/* Stat 2 */}
-              <div className="text-center flex flex-col items-center justify-center p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: '100ms' }}>
+              <div className="text-center flex flex-col items-center justify-center p-8 md:p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: '100ms' }}>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20 group-hover:bg-secondary group-hover:border-transparent transition-colors duration-500">
                     <span className="material-symbols-outlined text-secondary group-hover:text-primary transition-colors duration-500">favorite</span>
@@ -793,7 +810,7 @@ export default function Home() {
               </div>
 
               {/* Stat 3 */}
-              <div className="text-center flex flex-col items-center justify-center p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: '200ms' }}>
+              <div className="text-center flex flex-col items-center justify-center p-8 md:p-12 rounded-[32px] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/20 transition-all duration-500 group fade-up" style={{ transitionDelay: '200ms' }}>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20 group-hover:bg-secondary group-hover:border-transparent transition-colors duration-500">
                     <span className="material-symbols-outlined text-secondary group-hover:text-primary transition-colors duration-500">code_blocks</span>
