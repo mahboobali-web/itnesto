@@ -52,7 +52,7 @@ function ImpactCard({ metric, idx }) {
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="relative p-8 rounded-[32px] overflow-hidden border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_50px_rgba(100,251,151,0.2)] bg-gradient-to-br from-[#0a1121] to-[#12223a] min-h-[240px] flex flex-col justify-end w-full h-full cursor-pointer group"
+        className="relative p-6 md:p-8 rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_50px_rgba(100,251,151,0.2)] bg-gradient-to-br from-[#0a1121] to-[#12223a] min-h-[200px] md:min-h-[240px] flex flex-col justify-end w-full h-full cursor-pointer group"
       >
         {/* Dynamic Inner Glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[var(--color-secondary)]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none" />
@@ -80,10 +80,10 @@ function ImpactCard({ metric, idx }) {
           </motion.div>
           
           <motion.div style={{ translateZ: 40 }}>
-            <div className="text-4xl md:text-5xl font-display-xl font-extrabold text-white mb-3 tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80 transition-all duration-300">
+            <div className="text-3xl sm:text-4xl md:text-5xl font-display-xl font-extrabold text-white mb-2 md:mb-3 tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-white/80 transition-all duration-300">
               {metric.value}<span className="text-[var(--color-secondary)] drop-shadow-[0_0_12px_rgba(100,251,151,0.4)] group-hover:text-[var(--color-secondary-container)] transition-colors duration-300">{metric.suffix}</span>
             </div>
-            <div className="text-[12px] font-bold text-white/70 uppercase tracking-[0.2em] group-hover:text-white transition-colors duration-300">{metric.label}</div>
+            <div className="text-[10px] sm:text-[12px] font-bold text-white/70 uppercase tracking-[0.1em] sm:tracking-[0.2em] group-hover:text-white transition-colors duration-300">{metric.label}</div>
           </motion.div>
         </div>
       </motion.div>
@@ -223,7 +223,7 @@ export default function Home() {
 
       {/* Top Navigation Bar */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/90 border-b border-outline-variant/20 shadow-sm h-20 transition-all">
-        <nav className="flex justify-between items-center px-margin-mobile h-full w-full max-w-container-max mx-auto">
+        <nav className="flex justify-between items-center px-6 md:px-12 h-full w-full max-w-container-max mx-auto">
           <div className="flex items-center gap-2 relative z-50">
             <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">grid_view</span>
             <span className="text-primary text-2xl md:text-3xl font-extrabold tracking-tighter">IT NESTO</span>
@@ -261,32 +261,32 @@ export default function Home() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative pt-[160px] pb-section-gap overflow-hidden min-h-screen flex items-center">
-          <div className="max-w-container-max mx-auto px-margin-mobile grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center relative z-10">
+        <section className="relative pt-[140px] md:pt-[160px] pb-24 md:pb-section-gap overflow-hidden min-h-[90vh] md:min-h-screen flex items-center">
+          <div className="max-w-container-max mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-stack-lg items-center relative z-10">
             <div className="fade-up visible">
-              <h1 className="font-display-2xl font-bold text-[40px] leading-[1.15] md:text-[50px] lg:text-[72px] md:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
-                Building Powerful <span className="inline-block text-secondary-container bg-primary px-3 pb-1 pt-1 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-xl md:rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
+              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.25] sm:text-[44px] sm:leading-[1.2] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
+                Building Powerful <span className="inline-block text-secondary-container bg-primary px-2 py-0.5 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-lg md:rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed text-lg">
                 We merge architectural precision with high-growth engineering to build scalable products for enterprise leaders and visionary startups.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <button className="magnetic-btn bg-primary text-on-primary px-8 py-4 rounded-full font-button text-button flex items-center gap-2 hover:shadow-lg transition-all active:scale-95">
+              <div className="flex flex-col sm:flex-row gap-4 mt-8 md:mt-0">
+                <button className="magnetic-btn bg-primary text-on-primary px-8 py-4 rounded-full font-button text-button flex justify-center items-center gap-2 hover:shadow-lg transition-all active:scale-95 w-full sm:w-auto">
                   Start Your Project
                   <span className="material-symbols-outlined">arrow_forward</span>
                 </button>
-                <button className="magnetic-btn border-2 border-outline-variant text-primary px-8 py-4 rounded-full font-button text-button hover:bg-primary hover:text-on-primary hover:border-primary transition-all">
+                <button className="magnetic-btn border-2 border-outline-variant text-primary px-8 py-4 rounded-full font-button text-button flex justify-center items-center hover:bg-primary hover:text-on-primary hover:border-primary transition-all w-full sm:w-auto">
                   View Our Work
                 </button>
               </div>
             </div>
             <div className="relative h-[400px] md:h-[600px] w-full flex items-center justify-center fade-up visible mt-8 lg:mt-0" style={{ transitionDelay: '200ms' }}>
-              <div className="relative w-full h-full max-w-lg mx-auto transform scale-75 sm:scale-90 md:scale-100 origin-center">
+              <div className="relative w-full h-full max-w-lg mx-auto transform scale-[0.6] sm:scale-75 md:scale-100 origin-center">
                 {/* Floating Card 1 - Web Dev */}
                 <motion.div 
                   animate={{ y: [0, -20, 0] }} 
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-[10%] left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
+                  className="absolute top-[5%] -left-[10%] md:left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -312,7 +312,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, 25, 0] }} 
                   transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-[40%] right-[-5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
+                  className="absolute top-[35%] right-[-15%] md:right-[-5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
                 >
                   <div className="flex justify-between items-end mb-4">
                     <div>
@@ -334,7 +334,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, -15, 0] }} 
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  className="absolute bottom-[5%] left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
+                  className="absolute bottom-[10%] -left-[5%] md:left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
                 >
                   <div className="w-full h-32 bg-primary rounded-xl mb-4 relative overflow-hidden flex flex-col p-3 border border-primary-container">
                     <div className="flex justify-between items-center mb-2">
@@ -415,8 +415,8 @@ export default function Home() {
         </section>
 
         {/* About Section - Modern Cinematic Layout */}
-        <section className="pt-section-gap pb-20 relative" id="about">
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+        <section className="pt-24 md:pt-section-gap pb-12 md:pb-20 relative" id="about">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             {/* Cinematic Image Card */}
             <div className="relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-elevation-2 h-[500px] md:h-[600px] lg:h-[700px] fade-up bg-primary group">
               
@@ -511,7 +511,7 @@ export default function Home() {
               </motion.div>
 
               {/* High-Contrast Floating Content Box */}
-              <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-6 md:p-8 lg:p-12 rounded-[24px] md:rounded-[32px] shadow-2xl border border-white/50 fade-up" style={{ transitionDelay: '200ms' }}>
+              <div className="absolute bottom-0 left-0 right-0 md:bottom-6 md:left-6 md:right-6 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-6 md:p-8 lg:p-12 rounded-b-[32px] rounded-t-none md:rounded-[32px] shadow-2xl border border-white/50 fade-up" style={{ transitionDelay: '200ms' }}>
                 <div className="flex items-center gap-4 mb-4 md:mb-6">
                   <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10">Our Mission</span>
                   <div className="h-px bg-primary/10 flex-1"></div>
@@ -547,7 +547,7 @@ export default function Home() {
             </div>
 
             {/* Impact Metrics */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8 lg:mt-12">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-8 lg:mt-12">
               {[
                 { icon: "handshake", value: "99", suffix: "%", label: "Client Retention", id: "retention" },
                 { icon: "rocket_launch", value: "250", suffix: "+", label: "Products Launched", id: "launched" },
@@ -562,7 +562,7 @@ export default function Home() {
 
         {/* Services Section */}
         <section className="py-section-gap bg-[#fdfdfd] border-y border-outline-variant/10" id="services">
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="text-center mb-20 fade-up">
               <span className="inline-block px-4 py-1 mb-4 text-[var(--color-secondary)] font-bold text-[11px] md:text-xs uppercase tracking-[0.15em]">
                 A Structured System, Not Just A Visual Identity
@@ -622,7 +622,7 @@ export default function Home() {
 
         {/* Portfolio Section */}
         <section className="py-section-gap bg-[#fdfdfd]" id="portfolio">
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 fade-up">
               <div className="max-w-2xl">
                 <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-[11px] md:text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10 mb-6">Our Work</span>
@@ -672,7 +672,7 @@ export default function Home() {
           {/* Subtle background element */}
           <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent -z-10"></div>
           
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 fade-up">
               <div className="max-w-2xl">
                 <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10 mb-6">Workflow</span>
@@ -721,7 +721,7 @@ export default function Home() {
           <div className="absolute top-0 right-1/4 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full pointer-events-none"></div>
           <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-primary-fixed/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-          <div className="max-w-container-max mx-auto px-margin-mobile relative z-10">
+          <div className="max-w-container-max mx-auto px-6 md:px-12 relative z-10">
             <div className="text-center mb-16 fade-up">
               <span className="inline-block px-4 py-1.5 bg-white/5 text-white font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-white/10 mb-6">Our Stack</span>
               <h2 className="text-4xl md:text-5xl text-white font-extrabold tracking-tight mb-4">World-Class Technologies</h2>
@@ -779,7 +779,7 @@ export default function Home() {
 
         {/* Statistics */}
         <section className="bg-primary pb-section-gap relative z-20" id="statistics">
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
@@ -831,7 +831,7 @@ export default function Home() {
           {/* Subtle background gradients */}
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-primary/5 -z-10"></div>
 
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               
               <div className="lg:col-span-4 fade-up">
@@ -969,7 +969,7 @@ export default function Home() {
 
         {/* Contact Form */}
         <section className="py-section-gap">
-          <div className="max-w-container-max mx-auto px-margin-mobile">
+          <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="bg-primary rounded-3xl overflow-hidden flex flex-col lg:flex-row">
               <div className="p-10 md:p-20 lg:w-1/2 text-on-primary">
                 <h2 className="font-display-xl text-headline-lg-mobile md:text-headline-xl mb-8">Let&apos;s build something exceptional together.</h2>
@@ -1044,7 +1044,7 @@ export default function Home() {
         {/* Decorative background glow */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
         
-        <div className="max-w-container-max mx-auto px-margin-mobile">
+        <div className="max-w-container-max mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
             {/* Brand Column */}
             <div className="lg:col-span-4">
