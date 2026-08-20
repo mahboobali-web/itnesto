@@ -280,13 +280,13 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="relative h-[350px] md:h-[500px] lg:h-[600px] w-full flex items-center justify-center fade-up visible mt-4 lg:mt-0 order-1 lg:order-2" style={{ transitionDelay: '200ms' }}>
+            <div className="relative h-[420px] md:h-[500px] lg:h-[600px] w-full flex items-center justify-center fade-up visible mt-4 lg:mt-0 order-1 lg:order-2" style={{ transitionDelay: '200ms' }}>
               <div className="relative w-full h-full max-w-lg mx-auto transform scale-[0.6] sm:scale-75 md:scale-100 origin-center">
                 {/* Floating Card 1 - Web Dev */}
                 <motion.div 
                   animate={{ y: [0, -20, 0] }} 
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-[5%] -left-[10%] md:left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
+                  className="absolute -top-[5%] -left-[15%] md:top-[5%] md:-left-[10%] md:left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -312,7 +312,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, 25, 0] }} 
                   transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-[35%] right-[-15%] md:right-[-5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
+                  className="absolute top-[40%] -right-[20%] md:top-[35%] md:-right-[5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
                 >
                   <div className="flex justify-between items-end mb-4">
                     <div>
@@ -334,7 +334,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, -15, 0] }} 
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  className="absolute bottom-[10%] -left-[5%] md:left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
+                  className="absolute -bottom-[5%] -left-[10%] md:bottom-[10%] md:left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
                 >
                   <div className="w-full h-32 bg-primary rounded-xl mb-4 relative overflow-hidden flex flex-col p-3 border border-primary-container">
                     <div className="flex justify-between items-center mb-2">
