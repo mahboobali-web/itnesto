@@ -12,6 +12,7 @@ export default function ProjectDetails({ params }) {
   const [currentImageIdx, setCurrentImageIdx] = useState(0);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getParams = async () => {
       const resolvedParams = await params;
       const slug = resolvedParams.slug;
@@ -41,25 +42,25 @@ export default function ProjectDetails({ params }) {
       </nav>
 
       {/* Hero Section: Modern Split / Massive Typography */}
-      <div className="relative pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto flex flex-col justify-center min-h-[70vh]">
+      <div className="relative pt-24 md:pt-32 pb-12 md:pb-20 px-6 md:px-12 max-w-7xl mx-auto flex flex-col justify-center min-h-[60vh] md:min-h-[70vh]">
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="z-10 relative"
         >
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-8 backdrop-blur-md">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-6 md:mb-8 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[var(--color-secondary)] animate-pulse"></span>
             <span className="text-xs font-bold uppercase tracking-widest text-white/80">{project.category}</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-[0.9] mb-8 font-display-xl">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter leading-tight md:leading-[0.9] mb-6 md:mb-8 font-display-xl break-words">
             {project.title.split(' ').map((word, i) => (
               <span key={i} className="block text-transparent bg-clip-text bg-gradient-to-br from-white to-white/40">{word}</span>
             ))}
           </h1>
           
-          <p className="text-xl md:text-3xl text-white/60 font-light max-w-3xl leading-relaxed">
+          <p className="text-lg md:text-3xl text-white/60 font-light max-w-3xl leading-relaxed">
             {project.summary}
           </p>
         </motion.div>
@@ -105,40 +106,40 @@ export default function ProjectDetails({ params }) {
       </div>
 
       {/* Bento Grid Content Section */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-32">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-32">
         
         {/* Metadata Bento */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-16 md:mb-20">
           {[
             { label: "Client", value: project.client },
             { label: "Role", value: project.role },
             { label: "Timeline", value: project.timeline },
             { label: "Live Project", value: <a href={project.url} target="_blank" rel="noopener noreferrer" className="text-[var(--color-secondary)] hover:underline inline-flex items-center gap-1">Visit Site <span className="material-symbols-outlined text-sm">arrow_outward</span></a> }
           ].map((item, idx) => (
-            <div key={idx} className="bg-white/5 border border-white/5 rounded-3xl p-8 hover:bg-white/10 transition-colors">
-              <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-3">{item.label}</p>
-              <p className="text-lg font-medium">{item.value}</p>
+            <div key={idx} className="bg-white/5 border border-white/5 rounded-3xl p-6 md:p-8 hover:bg-white/10 transition-colors">
+              <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-2 md:mb-3">{item.label}</p>
+              <p className="text-base md:text-lg font-medium">{item.value}</p>
             </div>
           ))}
         </div>
 
         {/* Core Case Study Bento */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
           
           {/* Challenge */}
-          <div className="md:col-span-7 bg-[#0f172a] rounded-[40px] p-10 md:p-14 border border-white/5 relative overflow-hidden">
+          <div className="md:col-span-7 bg-[#0f172a] rounded-[32px] md:rounded-[40px] p-8 md:p-14 border border-white/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/10 blur-[100px] rounded-full pointer-events-none"></div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 flex items-center gap-4">
-              <span className="material-symbols-outlined text-red-400 text-4xl">warning</span>
+            <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 flex items-center gap-3 md:gap-4">
+              <span className="material-symbols-outlined text-red-400 text-3xl md:text-4xl">warning</span>
               The Challenge
             </h2>
-            <p className="text-white/70 text-xl leading-relaxed font-light">
+            <p className="text-white/70 text-lg md:text-xl leading-relaxed font-light">
               {project.challenge}
             </p>
           </div>
 
           {/* Key Features */}
-          <div className="md:col-span-5 bg-[var(--color-secondary)] text-[#050B14] rounded-[40px] p-10 md:p-14 relative overflow-hidden">
+          <div className="md:col-span-5 bg-[var(--color-secondary)] text-[#050B14] rounded-[32px] md:rounded-[40px] p-8 md:p-14 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 blur-[80px] rounded-full pointer-events-none"></div>
              <h2 className="text-3xl md:text-4xl font-bold mb-8 flex items-center gap-4">
                <span className="material-symbols-outlined text-4xl">star</span>
@@ -155,42 +156,42 @@ export default function ProjectDetails({ params }) {
           </div>
 
           {/* Solution */}
-          <div className="md:col-span-12 bg-white/5 rounded-[40px] p-10 md:p-16 border border-white/5 relative overflow-hidden mt-2">
+          <div className="md:col-span-12 bg-white/5 rounded-[32px] md:rounded-[40px] p-8 md:p-16 border border-white/5 relative overflow-hidden mt-2">
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none"></div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-8 flex items-center gap-4">
-              <span className="material-symbols-outlined text-blue-400 text-5xl">lightbulb</span>
+            <h2 className="text-2xl md:text-5xl font-bold mb-6 md:mb-8 flex items-center gap-3 md:gap-4">
+              <span className="material-symbols-outlined text-blue-400 text-4xl md:text-5xl">lightbulb</span>
               The Solution
             </h2>
-            <p className="text-white/80 text-xl md:text-2xl leading-relaxed font-light max-w-4xl">
+            <p className="text-white/80 text-lg md:text-2xl leading-relaxed font-light max-w-4xl">
               {project.solution}
             </p>
           </div>
 
           {/* Impact */}
           {project.impact && (
-            <div className="md:col-span-8 bg-gradient-to-br from-[#0a1121] to-[#12223a] rounded-[40px] p-10 md:p-14 border border-[var(--color-secondary)]/20 relative overflow-hidden mt-2 shadow-2xl">
+            <div className="md:col-span-8 bg-gradient-to-br from-[#0a1121] to-[#12223a] rounded-[32px] md:rounded-[40px] p-8 md:p-14 border border-[var(--color-secondary)]/20 relative overflow-hidden mt-2 shadow-2xl">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[var(--color-secondary)]/20 via-transparent to-transparent opacity-80 z-0"></div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-8 flex items-center gap-4 relative z-10">
-                <span className="material-symbols-outlined text-[var(--color-secondary)] text-4xl">trending_up</span>
+              <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 flex items-center gap-3 md:gap-4 relative z-10">
+                <span className="material-symbols-outlined text-[var(--color-secondary)] text-3xl md:text-4xl">trending_up</span>
                 The Impact
               </h2>
-              <p className="text-white text-xl leading-relaxed font-medium relative z-10">
+              <p className="text-white text-lg md:text-xl leading-relaxed font-medium relative z-10">
                 {project.impact}
               </p>
             </div>
           )}
 
           {/* Tech Stack */}
-          <div className="md:col-span-4 bg-[#0a1121] rounded-[40px] p-10 md:p-14 border border-white/10 mt-2">
-            <h3 className="text-2xl font-bold mb-8 flex items-center gap-3 text-white/60">
+          <div className="md:col-span-4 bg-[#0a1121] rounded-[32px] md:rounded-[40px] p-8 md:p-14 border border-white/10 mt-2">
+            <h3 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 flex items-center gap-2 md:gap-3 text-white/60">
               <span className="material-symbols-outlined">code_blocks</span>
               Tech Stack
             </h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 md:gap-3">
               {project.technologies.map((tech, idx) => (
                 <span 
                   key={idx} 
-                  className="px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-sm font-bold text-white tracking-wide"
+                  className="px-4 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 text-xs md:text-sm font-bold text-white tracking-wide"
                 >
                   {tech}
                 </span>

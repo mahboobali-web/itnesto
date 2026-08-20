@@ -261,9 +261,9 @@ export default function Home() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative pt-[140px] md:pt-[160px] pb-24 md:pb-section-gap overflow-hidden min-h-[90vh] md:min-h-screen flex items-center">
+        <section className="relative pt-[120px] md:pt-[160px] pb-16 md:pb-24 lg:pb-[var(--spacing-section-gap)] overflow-hidden min-h-[90vh] md:min-h-screen flex items-center">
           <div className="max-w-container-max mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-stack-lg items-center relative z-10">
-            <div className="fade-up visible">
+            <div className="fade-up visible order-2 lg:order-1">
               <h1 className="font-display-2xl font-bold text-[38px] leading-[1.25] sm:text-[44px] sm:leading-[1.2] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
                 Building Powerful <span className="inline-block text-secondary-container bg-primary px-2 py-0.5 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-lg md:rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
               </h1>
@@ -280,7 +280,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="relative h-[400px] md:h-[600px] w-full flex items-center justify-center fade-up visible mt-8 lg:mt-0" style={{ transitionDelay: '200ms' }}>
+            <div className="relative h-[350px] md:h-[500px] lg:h-[600px] w-full flex items-center justify-center fade-up visible mt-4 lg:mt-0 order-1 lg:order-2" style={{ transitionDelay: '200ms' }}>
               <div className="relative w-full h-full max-w-lg mx-auto transform scale-[0.6] sm:scale-75 md:scale-100 origin-center">
                 {/* Floating Card 1 - Web Dev */}
                 <motion.div 
@@ -415,10 +415,10 @@ export default function Home() {
         </section>
 
         {/* About Section - Modern Cinematic Layout */}
-        <section className="pt-24 md:pt-section-gap pb-12 md:pb-20 relative" id="about">
-          <div className="max-w-container-max mx-auto px-6 md:px-12">
+        <section className="pt-16 md:pt-24 lg:pt-[var(--spacing-section-gap)] pb-12 md:pb-20 relative" id="about">
+          <div className="max-w-container-max mx-auto px-6 md:px-12 flex flex-col lg:block">
             {/* Cinematic Image Card */}
-            <div className="relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-elevation-2 h-[500px] md:h-[600px] lg:h-[700px] fade-up bg-primary group">
+            <div className="relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-elevation-2 min-h-[400px] h-[60vh] md:h-[600px] lg:h-[700px] flex flex-col justify-end fade-up bg-primary group">
               
               {/* Ken Burns Animated Background Image */}
               <motion.img 
@@ -511,7 +511,7 @@ export default function Home() {
               </motion.div>
 
               {/* High-Contrast Floating Content Box */}
-              <div className="absolute bottom-0 left-0 right-0 md:bottom-6 md:left-6 md:right-6 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-6 md:p-8 lg:p-12 rounded-b-[32px] rounded-t-none md:rounded-[32px] shadow-2xl border border-white/50 fade-up" style={{ transitionDelay: '200ms' }}>
+              <div className="relative lg:absolute bottom-0 left-0 right-0 lg:bottom-12 lg:left-12 lg:w-[580px] bg-surface/95 backdrop-blur-xl p-6 md:p-8 lg:p-12 rounded-t-3xl lg:rounded-t-none rounded-b-[32px] md:rounded-[32px] shadow-2xl border border-white/50 fade-up z-20 mt-auto" style={{ transitionDelay: '200ms' }}>
                 <div className="flex items-center gap-4 mb-4 md:mb-6">
                   <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary font-bold text-xs rounded-full uppercase tracking-[0.15em] border border-primary/10">Our Mission</span>
                   <div className="h-px bg-primary/10 flex-1"></div>
@@ -1045,9 +1045,9 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
         
         <div className="max-w-container-max mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-y-10 gap-x-6 lg:gap-8 mb-20">
             {/* Brand Column */}
-            <div className="lg:col-span-4">
+            <div className="col-span-2 lg:col-span-4">
               <span className="font-display-2xl text-[40px] font-black tracking-tighter block mb-6">IT NESTO</span>
               <p className="text-white/60 mb-8 max-w-sm text-lg leading-relaxed">
                 Pioneering the future of digital interaction through sophisticated engineering and human-centric design.
@@ -1060,7 +1060,7 @@ export default function Home() {
             </div>
 
             {/* Links Columns */}
-            <div className="lg:col-span-2 lg:col-start-7">
+            <div className="col-span-1 lg:col-span-2 lg:col-start-7">
               <h4 className="font-bold text-xl mb-6">Navigation</h4>
               <ul className="space-y-4">
                 <li><a className="text-secondary font-bold hover:text-white transition-colors" href="#">Home</a></li>
@@ -1070,7 +1070,7 @@ export default function Home() {
               </ul>
             </div>
             
-            <div className="lg:col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <h4 className="font-bold text-xl mb-6">Company</h4>
               <ul className="space-y-4">
                 <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">About Us</a></li>
@@ -1080,7 +1080,7 @@ export default function Home() {
               </ul>
             </div>
             
-            <div className="lg:col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <h4 className="font-bold text-xl mb-6">Socials</h4>
               <ul className="space-y-4">
                 <li><a className="text-white/60 hover:text-white font-medium transition-colors" href="#">LinkedIn</a></li>
