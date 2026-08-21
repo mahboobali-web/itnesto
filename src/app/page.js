@@ -264,7 +264,7 @@ export default function Home() {
         <section className="relative pt-[120px] md:pt-[160px] pb-16 md:pb-24 lg:pb-[var(--spacing-section-gap)] overflow-hidden min-h-[90vh] md:min-h-screen flex items-center">
           <div className="max-w-container-max mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-stack-lg items-center relative z-10">
             <div className="fade-up visible order-2 lg:order-1">
-              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.3] sm:text-[44px] sm:leading-[1.2] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
+              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.35] sm:text-[44px] sm:leading-[1.25] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
                 Building Powerful <span className="inline-block text-secondary-container bg-primary px-3 py-1 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-lg md:rounded-2xl shadow-xl transform md:-rotate-2">Digital</span> Experiences That Grow Your Business.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed text-lg">
@@ -286,7 +286,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, -20, 0] }} 
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-[10%] left-0 sm:left-[5%] md:top-[5%] md:-left-[10%] lg:left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
+                  className="absolute -top-[5%] -left-[15%] md:top-[5%] md:-left-[10%] md:left-0 w-64 glass-card rounded-2xl p-5 shadow-2xl z-20"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -312,7 +312,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, 25, 0] }} 
                   transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-[35%] right-0 sm:right-[5%] md:top-[35%] md:-right-[5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
+                  className="absolute top-[40%] -right-[20%] md:top-[35%] md:-right-[5%] w-72 glass-card rounded-2xl p-6 shadow-2xl z-30"
                 >
                   <div className="flex justify-between items-end mb-4">
                     <div>
@@ -334,7 +334,7 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, -15, 0] }} 
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  className="absolute -bottom-[10%] left-[10%] sm:left-[20%] md:bottom-[10%] md:left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
+                  className="absolute -bottom-[5%] -left-[10%] md:bottom-[10%] md:left-[10%] w-56 glass-card rounded-3xl p-4 shadow-xl z-10 border-4 border-surface"
                 >
                   <div className="w-full h-32 bg-primary rounded-xl mb-4 relative overflow-hidden flex flex-col p-3 border border-primary-container">
                     <div className="flex justify-between items-center mb-2">
