@@ -52,7 +52,7 @@ function ImpactCard({ metric, idx }) {
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="relative p-6 md:p-8 rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_50px_rgba(100,251,151,0.2)] bg-gradient-to-br from-[#0a1121] to-[#12223a] min-h-[200px] md:min-h-[240px] flex flex-col justify-end w-full h-full cursor-pointer group"
+        className="relative p-6 md:p-8 rounded-[24px] md:rounded-[32px] overflow-hidden border border-white/10 shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_50px_rgba(100,251,151,0.2)] bg-gradient-to-br from-[#00113A] to-[#00113A] min-h-[200px] md:min-h-[240px] flex flex-col justify-end w-full h-full cursor-pointer group"
       >
         {/* Dynamic Inner Glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[var(--color-secondary)]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none" />
@@ -264,8 +264,8 @@ export default function Home() {
         <section className="relative pt-[120px] md:pt-[160px] pb-16 md:pb-24 lg:pb-[var(--spacing-section-gap)] overflow-hidden min-h-[90vh] md:min-h-screen flex items-center">
           <div className="max-w-container-max mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-stack-lg items-center relative z-10">
             <div className="fade-up visible order-2 lg:order-1">
-              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.25] sm:text-[44px] sm:leading-[1.2] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
-                Building Powerful <span className="inline-block text-secondary-container bg-primary px-2 py-0.5 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-lg md:rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
+              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.3] sm:text-[44px] sm:leading-[1.2] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
+                Building Powerful <span className="inline-block text-secondary-container bg-primary px-3 py-1 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-lg md:rounded-2xl shadow-xl transform md:-rotate-2">Digital</span> Experiences That Grow Your Business.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed text-lg">
                 We merge architectural precision with high-growth engineering to build scalable products for enterprise leaders and visionary startups.
@@ -448,17 +448,17 @@ export default function Home() {
               <motion.div 
                 animate={{ y: [0, -20, 0], opacity: [0.95, 1, 0.95] }} 
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-12 right-12 hidden lg:flex items-center gap-4 bg-[#060B14] border border-white/15 p-5 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
+                className="absolute top-12 right-12 hidden lg:flex items-center gap-4 bg-[#00113A] border border-white/15 p-5 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
               >
                 <div className="relative flex h-5 w-5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75 duration-1000"></span>
-                  <span className="relative inline-flex rounded-full h-5 w-5 bg-[#10B981] shadow-[0_0_15px_rgba(16,185,129,0.6)] border-2 border-[#060B14]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#64FB97] opacity-75 duration-1000"></span>
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-[#64FB97] shadow-[0_0_15px_rgba(16,185,129,0.6)] border-2 border-[#00113A]"></span>
                 </div>
                 <div>
                   <div className="text-[10px] font-bold text-white/80 tracking-widest uppercase mb-0.5">Active Sprints</div>
                   <div className="text-base font-bold text-white flex items-center gap-2">
                     12 Projects
-                    <span className="text-[10px] text-[#34D399] font-mono bg-[#10B981]/15 px-2 py-0.5 rounded-full border border-[#10B981]/30">On Track</span>
+                    <span className="text-[10px] text-[#64FB97] font-mono bg-[#64FB97]/15 px-2 py-0.5 rounded-full border border-[#64FB97]/30">On Track</span>
                   </div>
                 </div>
               </motion.div>
@@ -467,17 +467,17 @@ export default function Home() {
               <motion.div 
                 animate={{ y: [0, 15, 0] }} 
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute top-1/3 right-32 hidden lg:block w-72 bg-[#060B14] border border-white/15 p-6 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
+                className="absolute top-1/3 right-32 hidden lg:block w-72 bg-[#00113A] border border-white/15 p-6 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
               >
                 <div className="text-[10px] font-bold text-white/80 tracking-widest uppercase mb-4 flex justify-between items-center">
                   <span>Weekly Deployments</span>
-                  <span className="text-[#34D399] font-mono bg-[#10B981]/15 px-2 py-0.5 rounded border border-[#10B981]/30">48+</span>
+                  <span className="text-[#64FB97] font-mono bg-[#64FB97]/15 px-2 py-0.5 rounded border border-[#64FB97]/30">48+</span>
                 </div>
                 <div className="flex items-end gap-2 h-20">
                   {[40, 70, 45, 90, 65, 85, 30, 60, 50, 75, 85, 40].map((h, i) => (
                     <motion.div 
                       key={i}
-                      className="w-full bg-gradient-to-t from-[#10B981]/50 to-[#10B981] rounded-t-sm shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+                      className="w-full bg-gradient-to-t from-[#64FB97]/50 to-[#64FB97] rounded-t-sm shadow-[0_0_10px_rgba(16,185,129,0.5)]"
                       animate={{ height: [`${h}%`, `${Math.max(10, h - 30 + Math.random()*60)}%`, `${h}%`] }}
                       transition={{ duration: 1.5 + Math.random(), repeat: Infinity, ease: "easeInOut" }}
                       style={{ height: `${h}%` }}
@@ -490,15 +490,15 @@ export default function Home() {
               <motion.div 
                 animate={{ y: [0, -10, 0] }} 
                 transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                className="absolute bottom-1/4 right-16 hidden lg:flex items-center gap-5 bg-[#060B14] border border-white/15 p-5 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
+                className="absolute bottom-1/4 right-16 hidden lg:flex items-center gap-5 bg-[#00113A] border border-white/15 p-5 rounded-3xl shadow-[0_15px_40px_rgba(16,185,129,0.15)] z-20"
               >
-                <div className="relative w-12 h-12 border border-[#10B981]/40 rounded-full flex items-center justify-center">
+                <div className="relative w-12 h-12 border border-[#64FB97]/40 rounded-full flex items-center justify-center">
                   <motion.div 
-                    className="absolute w-full h-full border-t border-[#10B981] rounded-full"
+                    className="absolute w-full h-full border-t border-[#64FB97] rounded-full"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                   ></motion.div>
-                  <div className="w-2 h-2 bg-[#10B981] rounded-full shadow-[0_0_12px_rgba(16,185,129,1)]"></div>
+                  <div className="w-2 h-2 bg-[#64FB97] rounded-full shadow-[0_0_12px_rgba(16,185,129,1)]"></div>
                   <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_5px_rgba(255,255,255,0.8)]"></div>
                   <div className="absolute bottom-2.5 left-2.5 w-1 h-1 bg-white/70 rounded-full"></div>
                 </div>
@@ -561,7 +561,7 @@ export default function Home() {
         </section>
 
         {/* Services Section */}
-        <section className="py-section-gap bg-[#fdfdfd] border-y border-outline-variant/10" id="services">
+        <section className="py-section-gap bg-[#F5F5F7] border-y border-outline-variant/10" id="services">
           <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="text-center mb-20 fade-up">
               <span className="inline-block px-4 py-1 mb-4 text-[var(--color-secondary)] font-bold text-[11px] md:text-xs uppercase tracking-[0.15em]">
@@ -583,7 +583,7 @@ export default function Home() {
                 { icon: "smart_toy", title: "AI Workflows", desc: "Intelligent automation and AI integrations to supercharge your operations.", delay: "600ms" },
                 { icon: "developer_board", title: "Custom Software", desc: "Bespoke enterprise applications tailored specifically to your business logic.", delay: "700ms" }
               ].map((service, idx) => (
-                <div key={idx} className="relative p-8 md:p-10 rounded-[24px] bg-gradient-to-br from-[#0a1121] to-[#12223a] overflow-hidden shadow-[0_20px_50px_rgba(10,21,16,0.15)] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(100,251,151,0.15)] transition-all duration-500 group fade-up flex flex-col" style={{ transitionDelay: service.delay }}>
+                <div key={idx} className="relative p-8 md:p-10 rounded-[24px] bg-gradient-to-br from-[#00113A] to-[#00113A] overflow-hidden shadow-[0_20px_50px_rgba(10,21,16,0.15)] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(100,251,151,0.15)] transition-all duration-500 group fade-up flex flex-col" style={{ transitionDelay: service.delay }}>
                   {/* Subtle Texture/Grain overlay */}
                   <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}></div>
                   
@@ -621,7 +621,7 @@ export default function Home() {
         </section>
 
         {/* Portfolio Section */}
-        <section className="py-section-gap bg-[#fdfdfd]" id="portfolio">
+        <section className="py-section-gap bg-[#F5F5F7]" id="portfolio">
           <div className="max-w-container-max mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 fade-up">
               <div className="max-w-2xl">
@@ -648,7 +648,7 @@ export default function Home() {
                   />
                   
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1526]/90 via-[#0B1526]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#00113A]/90 via-[#00113A]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
                   
                   {/* Content */}
                   <div className="absolute bottom-0 left-0 w-full p-8 md:p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
