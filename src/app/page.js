@@ -264,7 +264,7 @@ export default function Home() {
         <section className="relative pt-[120px] md:pt-[160px] pb-16 md:pb-24 lg:pb-[var(--spacing-section-gap)] overflow-hidden min-h-[90vh] md:min-h-screen flex items-center">
           <div className="max-w-container-max mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-stack-lg items-center relative z-10">
             <div className="fade-up visible order-2 lg:order-1">
-              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.25] sm:text-[44px] sm:leading-[1.2] md:text-[50px] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
+              <h1 className="font-display-2xl font-bold text-[38px] leading-[1.4] sm:text-[44px] sm:leading-[1.3] md:text-[50px] md:leading-[1.2] lg:text-[72px] lg:leading-[1.1] text-primary mb-6 md:mb-8 tracking-tight">
                 Building Powerful <span className="inline-block text-secondary-container bg-primary px-2 py-0.5 md:px-4 md:pb-2 md:pt-1 mx-1 rounded-lg md:rounded-2xl shadow-xl transform -rotate-2">Digital</span> Experiences That Grow Your Business.
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed text-lg">
